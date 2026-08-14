@@ -60,8 +60,6 @@ src/
 
 ```bash
 npm install
-# iOS (if needed)
-cd ios && pod install && cd ..
 ```
 
 ### Run
@@ -69,8 +67,6 @@ cd ios && pod install && cd ..
 ```bash
 npm start
 npm run android
-# or
-npm run ios
 ```
 
 > Before running, check the API base URL in the HTTP config/services (it may be hardcoded for local development).
