@@ -8,7 +8,8 @@
     "lint": "eslint .",
     "start": "react-native start",
     "dev": "react-native start --experimental-debugger",
-    "test": "jest"
+    "test": "jest",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.23.1",

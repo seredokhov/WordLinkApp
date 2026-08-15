@@ -25,9 +25,9 @@ const CloudButtons = () => {
     const fetchData = () => {
         setReady(false);
         WordService.getDictionary(user.token)
-            .then(response => {
+            .then(words => {
                 const localEntities = Object.values(dictionary);
-                const remoteEntities = Object.values(response.data);
+                const remoteEntities = Object.values(words);
                 const combinedWords = prepareWordsToSynchronize(localEntities, remoteEntities);
 
                 setWordsToSynchronize(combinedWords);

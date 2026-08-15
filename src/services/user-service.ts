@@ -1,9 +1,11 @@
 import HttpService from './http-service';
+import { RegisterRequest, LoginRequest, User, UserResponse } from '../types';
+import { AxiosResponse } from "axios";
 
 class UserService {
-    login(body) {
-        return HttpService.post('/auth/login', body)
-            .then(response => {
+    login(body: LoginRequest): Promise<User> {
+        return HttpService.post<UserResponse>('/auth/login', body)
+            .then((response: AxiosResponse<UserResponse>): User => {
                 const { data } = response;
 
                 return {
@@ -18,9 +20,9 @@ class UserService {
             });
     }
 
-    createUser(body) {
-        return HttpService.post('/auth/registration', body)
-            .then(response => {
+    createUser(body: RegisterRequest): Promise<User> {
+        return HttpService.post<UserResponse>('/auth/registration', body)
+            .then((response: AxiosResponse<UserResponse>): User => {
                 const { data } = response;
 
                 return {
@@ -33,17 +35,12 @@ class UserService {
             });
     }
 
-    getUser(username, token) {
-        return HttpService.get(`/user/${username}`, token)
-            .then(response => response.data);
+    updateUser(body: User, token: string): Promise<AxiosResponse<void>> {
+        return HttpService.patch<void>(`/user/update`, body, token);
     }
 
-    updateUser(body, token) {
-        return HttpService.patch(`/user/update`, body, token);
-    }
-
-    deleteUser(token) {
-        return HttpService.delete('/user/delete', token);
+    deleteUser(token: string): Promise<AxiosResponse<void>> {
+        return HttpService.delete<void>('/user/delete', token);
     }
 }
 

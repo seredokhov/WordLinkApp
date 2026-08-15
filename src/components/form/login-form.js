@@ -24,9 +24,7 @@ const LoginForm = () => {
         UserService.login(body)
             .then(user => {
                 WordService.getDictionary(user.token)
-                    .then(response => {
-                        const words = response.data;
-
+                    .then(words => {
                         Promise.all([
                             AsyncStorageService.deleteAllData(),
                             AsyncStorageService.setUser(user),

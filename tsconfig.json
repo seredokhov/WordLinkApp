@@ -1,0 +1,11 @@
+// temporary config for soft migrate to TypeScript
+{
+    "extends": "@react-native/typescript-config/tsconfig.json",
+    "compilerOptions": {
+      "strict": true,
+      "noImplicitAny": true,
+      "allowJs": true,
+      "checkJs": false,
+      "skipLibCheck": true
+    }
+  }
