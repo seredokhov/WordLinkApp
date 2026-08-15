@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { COLORS } from'../../constants/theme';
+import { COLORS } from '../../constants/theme';
 import IconButton from '../button/icon-button';
 
 const PracticeResults = props => {
