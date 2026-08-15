@@ -1,7 +1,7 @@
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Switch, TouchableHighlight } from 'react-native';
-import { ContextApp } from '../../store/context';
+import { useAppContext } from '../../store/context';
 import { COLORS } from '../../constants/theme';
 import CloudButtons from '../cloud/cloud-buttons';
 import UserService from '../../services/user-service';
@@ -16,7 +16,7 @@ const CONFIRMATION_STRING = 'Delete';
 const DatabaseContainer = props => {
     const { onDeleteUser } = { ...defaultProps, ...props };
 
-    const { store: { user, isOnline }, dispatch } = useContext(ContextApp);
+    const { store: { user, isOnline }, dispatch } = useAppContext();
     const { isDataSynchronized } = user || {};
 
     const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);

@@ -1,8 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { COLORS } from '../../constants/theme';
 import { GUEST } from '../../constants/access';
-import { ContextApp } from '../../store/context';
+import { useAppContext } from '../../store/context';
 import AsyncStorageService from '../../services/async-storage-service';
 import { Login, Init, Logout } from '../../store/actions';
 import Button from '../../components/button';
@@ -10,7 +10,7 @@ import { useIsFocused } from '@react-navigation/native';
 
 const GetStartedScreen = props => {
     const { navigation } = props;
-    const { store: { user }, dispatch } = useContext(ContextApp);
+    const { store: { user }, dispatch } = useAppContext();
     const isFocused = useIsFocused();
 
     const loginLikeGuest = async () => {

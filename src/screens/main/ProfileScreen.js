@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import BorderedHeader from '../../components/header/bordered-header';
 import Content from '../../components/content';
 import { COLORS } from '../../constants/theme';
-import { ContextApp } from '../../store/context';
+import { useAppContext } from '../../store/context';
 import ConfirmModal from '../../components/modal/confirm-modal';
 import DatabaseContainer from '../../components/container/database-container';
 import Button from '../../components/button';
@@ -12,7 +12,7 @@ import Title from '../../components/title';
 
 const ProfileScreen = props => {
     const { navigation } = props;
-    const { store: { user, dictionary } } = useContext(ContextApp);
+    const { store: { user, dictionary } } = useAppContext();
     const { name, login, token } = user || {};
     const wordsCount = Object.keys(dictionary).length;
     const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);

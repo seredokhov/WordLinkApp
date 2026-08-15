@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, Text, Modal, StyleSheet } from 'react-native';
-import { ContextApp } from '../../store/context';
+import { useAppContext } from '../../store/context';
 import { SetError } from '../../store/actions';
 import { COLORS } from '../../constants/theme';
 import Button from '../button';
 
 const AlertModal = () => {
-    const { store: { alertMessage }, dispatch } = useContext(ContextApp);
+    const { store: { alertMessage }, dispatch } = useAppContext();
     const closeModal = () => {
         dispatch(SetError(null));
     };

@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ContextApp } from '../../store/context';
+import { useAppContext } from '../../store/context';
 import {Init, Login, SetError} from '../../store/actions';
 import UserService from '../../services/user-service';
 import AsyncStorageService from '../../services/async-storage-service';
@@ -10,7 +10,8 @@ import Button from '../button';
 import { errorHandler } from '../../utils';
 
 const LoginForm = () => {
-    const { dispatch } = useContext(ContextApp);
+    const { dispatch } = useAppContext();
+
     const [loginValue, setLoginValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
     const isButtonActive = loginValue.length >  3 && passwordValue.length > 4;

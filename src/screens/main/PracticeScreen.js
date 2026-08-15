@@ -1,7 +1,7 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { COLORS } from '../../constants/theme';
-import { ContextApp } from '../../store/context';
+import { useAppContext } from '../../store/context';
 import { getRandomEntities, errorHandler } from '../../utils';
 import Content from '../../components/content';
 import BorderedHeader from '../../components/header/bordered-header';
@@ -19,7 +19,7 @@ const TRANSLATIONS_LIMIT = 6;
 
 const PracticeScreen = props => {
     const { navigation } = props;
-    const { store: { dictionary, user, isOnline }, dispatch } = useContext(ContextApp);
+    const { store: { dictionary, user, isOnline }, dispatch } = useAppContext();
     const { allowedTests } = user || {};
     const [words, setWords] = useState([]);
     const [unlearnedWordsCount, setUnlearnedWordsCount] = useState(0);

@@ -1,13 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { ContextApp } from '../../store/context';
+import { useAppContext } from '../../store/context';
 import { COLORS } from '../../constants/theme';
 import AsyncStorageService from '../../services/async-storage-service';
 import { Init, Login, SetError } from '../../store/actions';
 
 const CheckAuthScreen = props => {
     const { navigation } = props;
-    const { store: { user, isLoadedAppData }, dispatch } = useContext(ContextApp);
+    const { store: { user, isLoadedAppData }, dispatch } = useAppContext();
 
     const checkAuth = async () => {
         const user = await AsyncStorageService.getUser();

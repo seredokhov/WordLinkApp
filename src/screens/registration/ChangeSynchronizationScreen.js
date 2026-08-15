@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import RegistrationGuide from '../../components/form/registration-guide';
 import { StyleSheet, View } from 'react-native';
 import Button from '../../components/button';
@@ -6,13 +6,13 @@ import UserService from '../../services/user-service';
 import AsyncStorageService from '../../services/async-storage-service';
 import { Init, Login, SetError } from '../../store/actions';
 import { errorHandler } from '../../utils';
-import { ContextApp } from '../../store/context';
+import { useAppContext } from '../../store/context';
 import { COLORS } from '../../constants/theme';
 
 const ChangeSynchronizationScreen = props => {
     const { route } = props;
     const { name, login, password } = route.params;
-    const { store: { dictionary }, dispatch } = useContext(ContextApp);
+    const { store: { dictionary }, dispatch } = useAppContext();
 
     const createUser = async isDataSynchronized => {
         const body = {

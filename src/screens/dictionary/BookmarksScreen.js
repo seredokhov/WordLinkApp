@@ -1,11 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { ContextApp } from '../../store/context';
+import { useAppContext } from '../../store/context';
 import WordList from '../../components/word-list';
 
 const BookmarksScreen = props => {
     const { navigation } = props;
-    const { store: { filterMask, dictionary } } = useContext(ContextApp);
+    const { store: { filterMask, dictionary } } = useAppContext();
     const words = Object.values(dictionary);
 
     const filteredWords = words.filter(el => {

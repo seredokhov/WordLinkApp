@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { COLORS, SIZES } from '../../constants/theme';
-import { ContextApp } from '../../store/context';
+import { useAppContext } from '../../store/context';
 import { AddWord, Filter, SetError } from '../../store/actions';
 import AsyncStorageService from '../../services/async-storage-service';
 import WordService from '../../services/word-service';
@@ -12,7 +12,7 @@ import { errorHandler } from '../../utils';
 const SearchContainer = () => {
     const [isWordModalOpen, setWordModalOpen] = useState(false);
     const [wordName, setWordName] = useState('');
-    const { store: { user, isOnline }, dispatch } = useContext(ContextApp);
+    const { store: { user, isOnline }, dispatch } = useAppContext();
 
     const wordDraft = {
         word: wordName,

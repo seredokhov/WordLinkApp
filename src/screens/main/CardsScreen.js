@@ -1,7 +1,7 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { COLORS } from '../../constants/theme';
-import { ContextApp } from '../../store/context';
+import { useAppContext } from '../../store/context';
 import { randomize } from '../../utils';
 import CardsBlock from '../../components/card/cards-block';
 import Content from '../../components/content';
@@ -12,7 +12,7 @@ import Loader from '../../components/loader';
 
 const CardsScreen = props => {
     const { navigation } = props;
-    const { store: { dictionary } } = useContext(ContextApp);
+    const { store: { dictionary } } = useAppContext();
     const cardsData = Object.values(dictionary);
     const [cards, setCards] = useState(cardsData);
     const [isLoadedData, setLoadedData] = useState(false);

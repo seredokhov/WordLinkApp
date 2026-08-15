@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Animated, View, StyleSheet } from 'react-native';
-import { ContextApp } from '../../store/context';
+import { useAppContext } from '../../store/context';
 import DictionaryNavigator from '../../navigators/DictionaryNavigator';
 import Content from '../../components/content';
 import WordContainer from '../../components/container/word-container';
@@ -14,7 +14,7 @@ const HomeScreen = props => {
         navigation.navigate('Profile');
     };
 
-    const { store: { selectedWord } } = useContext(ContextApp);
+    const { store: { selectedWord } } = useAppContext();
 
     const topHalfStyles = [
         {

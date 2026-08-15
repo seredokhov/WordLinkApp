@@ -1,14 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { COLORS } from '../../constants/theme';
-import { ContextApp } from '../../store/context';
+import { useAppContext } from '../../store/context';
 import { SelectWord } from '../../store/actions';
 import Word from '../word';
 
 const WordList = props => {
     const { data } = props;
-    const { store: { selectedWord }, dispatch } = useContext(ContextApp);
+    const { store: { selectedWord }, dispatch } = useAppContext();
     const sortedData = data.sort((a, b) => a.word.localeCompare(b.word));
 
     const selectWord = wordData => {

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { ContextApp } from '../../store/context';
+import { useAppContext } from '../../store/context';
 import { Init, MergeWords, SetError } from '../../store/actions';
 import AsyncStorageService from '../../services/async-storage-service';
 import WordService, { wordMapper } from "../../services/word-service";
@@ -9,7 +9,7 @@ import Loader from '../loader';
 import { errorHandler, prepareWordsToSynchronize } from '../../utils';
 
 const CloudButtons = () => {
-    const { store: { user, dictionary, isOnline }, dispatch } = useContext(ContextApp);
+    const { store: { user, dictionary, isOnline }, dispatch } = useAppContext();
     const [wordsToSynchronize, setWordsToSynchronize] = useState({});
     const [isReady, setReady] = useState(false);
 
