@@ -1,5 +1,7 @@
-import { User } from './user.ts';
-import { Dictionary, Word } from './word.ts';
+import { User } from './user';
+import { Dictionary, Word } from './word';
+import { Dispatch } from 'react';
+import { Action } from './store';
 
 export type AppState = {
     user: User | null;
@@ -9,4 +11,9 @@ export type AppState = {
     selectedWord: Word | Record<string, never>;
     alertMessage: string | null;
     isOnline: boolean;
+};
+
+export type AppContextValue = {
+    store: AppState;
+    dispatch: Dispatch<Action>;
 };

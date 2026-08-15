@@ -1,4 +1,7 @@
-export const initialState = {
+import { AppState, Dictionary } from '../types';
+import { Action } from '../types';
+
+export const initialState: AppState = {
     user: null,
     dictionary: {},
     isLoadedAppData: false,
@@ -8,7 +11,7 @@ export const initialState = {
     isOnline: false
 };
 
-export const reducer = (state, action) => {
+export const reducer = (state: AppState, action: Action): AppState => {
     switch (action.type) {
         case 'LOGIN':
             return {
@@ -70,10 +73,10 @@ export const reducer = (state, action) => {
                 updatedDictionary = {
                     [newWordData.word]: newWordData,
                     ...otherDictionary
-                }
+                };
             });
 
-            const newWords = {};
+            const newWords: Dictionary = {};
 
             created.forEach(entity => {
                 newWords[entity.word] = {
@@ -113,14 +116,6 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 alertMessage: action.payload
-            }
-        case 'SET_DATABASE_SYNCHRONIZATION':
-            return {
-                ...state,
-                user: {
-                    ...state.user,
-                    isDataSynchronized: action.payload
-                }
             };
         case 'UPDATE_USER': {
             return  {
@@ -139,5 +134,3 @@ export const reducer = (state, action) => {
             return state;
     }
 };
-
-export default { initialState, reducer };
