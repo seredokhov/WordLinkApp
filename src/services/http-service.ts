@@ -1,4 +1,4 @@
-import axios from '../../axios.ts';
+import axios from '../../axios';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const setAuthToken: (token: string | null) => AxiosRequestConfig | undefined = token  => {

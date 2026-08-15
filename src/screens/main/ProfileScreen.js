@@ -9,7 +9,6 @@ import ConfirmModal from '../../components/modal/confirm-modal';
 import DatabaseContainer from '../../components/container/database-container';
 import Button from '../../components/button';
 import Title from '../../components/title';
-import { useDisableBackGesture } from '../../utils/hooks';
 
 const ProfileScreen = props => {
     const { navigation } = props;
@@ -17,8 +16,6 @@ const ProfileScreen = props => {
     const { name, login, token } = user || {};
     const wordsCount = Object.keys(dictionary).length;
     const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
-
-    useDisableBackGesture(navigation);
 
     const openConformModal = () => setConfirmModalOpen(true);
 
@@ -30,12 +27,18 @@ const ProfileScreen = props => {
 
     const logout = () => {
         closeConformModal();
-
-        navigation.dispatch(
-            CommonActions.navigate({
-                name: 'GetStarted'
-            })
-        );
+        navigation.getParent()?.reset({
+            index: 0,
+            routes: [
+                {
+                    name: 'Auth',
+                    state: {
+                        index: 0,
+                        routes: [{ name: 'GetStarted' }],
+                    },
+                },
+            ],
+        });
     };
 
     const createUser = () => {

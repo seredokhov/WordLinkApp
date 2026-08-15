@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { ContextApp } from '../../store/context';
 import { COLORS } from '../../constants/theme';
-import { CommonActions } from '@react-navigation/native';
 import AsyncStorageService from '../../services/async-storage-service';
 import { Init, Login, SetError } from '../../store/actions';
 
@@ -31,16 +30,17 @@ const CheckAuthScreen = props => {
         }
 
         if (!user) {
-            navigation.navigate('GetStarted');
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'GetStarted' }],
+            });
             return;
         }
 
-        navigation.dispatch(
-            CommonActions.navigate({
-                name: 'App'
-            })
-        );
-
+        navigation.getParent()?.reset({
+            index: 0,
+            routes: [{ name: 'App' }],
+        });
     }, [user, isLoadedAppData]);
 
     return (

@@ -9,7 +9,6 @@ import BorderedHeader from '../../components/header/bordered-header';
 import { useIsFocused } from '@react-navigation/native';
 import Button from '../../components/button';
 import Loader from '../../components/loader';
-import { useDisableBackGesture } from '../../utils/hooks';
 
 const CardsScreen = props => {
     const { navigation } = props;
@@ -18,8 +17,6 @@ const CardsScreen = props => {
     const [cards, setCards] = useState(cardsData);
     const [isLoadedData, setLoadedData] = useState(false);
     const isFocused = useIsFocused();
-
-    useDisableBackGesture(navigation);
 
     const navigateToProfile = () => {
         navigation.navigate('Profile');

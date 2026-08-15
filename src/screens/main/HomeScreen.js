@@ -6,12 +6,9 @@ import Content from '../../components/content';
 import WordContainer from '../../components/container/word-container';
 import SearchContainer from '../../components/container/search-container';
 import BorderedHeader from '../../components/header/bordered-header';
-import { useDisableBackGesture } from '../../utils/hooks';
 
 const HomeScreen = props => {
     const { navigation } = props;
-
-    useDisableBackGesture(navigation);
 
     const navigateToProfile = () => {
         navigation.navigate('Profile');

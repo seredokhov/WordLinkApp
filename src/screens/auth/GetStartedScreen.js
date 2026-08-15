@@ -7,15 +7,11 @@ import AsyncStorageService from '../../services/async-storage-service';
 import { Login, Init, Logout } from '../../store/actions';
 import Button from '../../components/button';
 import { useIsFocused } from '@react-navigation/native';
-import { useDisableBackGesture } from '../../utils/hooks';
-import Icon from "react-native-vector-icons/Ionicons";
 
 const GetStartedScreen = props => {
     const { navigation } = props;
     const { store: { user }, dispatch } = useContext(ContextApp);
     const isFocused = useIsFocused();
-
-    useDisableBackGesture(navigation);
 
     const loginLikeGuest = async () => {
         const storageData = await AsyncStorageService.getDictionary();

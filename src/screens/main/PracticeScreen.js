@@ -12,7 +12,6 @@ import { Init, SetError, UpdateUser } from '../../store/actions';
 import { CommonActions, useIsFocused } from '@react-navigation/native';
 import Button from '../../components/button';
 import UserService from '../../services/user-service';
-import { useDisableBackGesture } from '../../utils/hooks';
 
 export const TESTS_LIMIT = 3;
 const WORDS_LIMIT = 10;
@@ -25,8 +24,6 @@ const PracticeScreen = props => {
     const [words, setWords] = useState([]);
     const [unlearnedWordsCount, setUnlearnedWordsCount] = useState(0);
     const isFocused = useIsFocused();
-
-    useDisableBackGesture(navigation);
 
     const navigateToProfile = () => {
         navigation.navigate('Profile');
