@@ -4,8 +4,9 @@ import { useAppContext } from '../../store/context';
 import { COLORS } from '../../constants/theme';
 import AsyncStorageService from '../../services/async-storage-service';
 import { Init, Login, SetError } from '../../store/actions';
+import { CheckAuthScreenProps } from '../../types';
 
-const CheckAuthScreen = props => {
+const CheckAuthScreen = (props: CheckAuthScreenProps) => {
     const { navigation } = props;
     const { store: { user, isLoadedAppData }, dispatch } = useAppContext();
 

@@ -12,30 +12,35 @@ import { Init, SetError, UpdateUser } from '../../store/actions';
 import { CommonActions, useIsFocused } from '@react-navigation/native';
 import Button from '../../components/button';
 import UserService from '../../services/user-service';
+import { Dictionary, PracticeCard, PracticeScreenProps, User } from '../../types';
 
 export const TESTS_LIMIT = 3;
 const WORDS_LIMIT = 10;
 const TRANSLATIONS_LIMIT = 6;
 
-const PracticeScreen = props => {
+const PracticeScreen = (props: PracticeScreenProps) => {
     const { navigation } = props;
     const { store: { dictionary, user, isOnline }, dispatch } = useAppContext();
-    const { allowedTests } = user || {};
-    const [words, setWords] = useState([]);
-    const [unlearnedWordsCount, setUnlearnedWordsCount] = useState(0);
+    const { allowedTests = 0 } = user || {};
+    const [words, setWords] = useState<PracticeCard[]>([]);
+    const [unlearnedWordsCount, setUnlearnedWordsCount] = useState<number>(0);
     const isFocused = useIsFocused();
 
-    const navigateToProfile = () => {
+    const navigateToProfile = (): void => {
         navigation.navigate('Profile');
     };
 
-    const localUpdateUser = newUser => {
+    const localUpdateUser = (newUser: User) => {
         AsyncStorageService.setUser(newUser)
             .then(() => dispatch(UpdateUser(newUser)))
             .catch(err => dispatch(SetError(errorHandler(err))));
     };
 
-    const updateUser = newUser => {
+    const updateUser = (newUser: User) => {
+        if (!user) {
+            return;
+        }
+
         if (isOnline && user.isDataSynchronized && user.token) {
             UserService.updateUser(newUser, user.token)
                 .then(() => localUpdateUser(newUser))
@@ -48,6 +53,10 @@ const PracticeScreen = props => {
     };
 
     const startTest = () => {
+        if (!user) {
+            return;
+        }
+
         const newUser = {
             ...user,
             allowedTests: allowedTests > 0 ? allowedTests - 1 : 0,
@@ -66,20 +75,14 @@ const PracticeScreen = props => {
         setWords(randomWords);
     };
 
-    const saveResults = correctWords => {
-        const wordsToUpdate = {};
-
-        correctWords.forEach(item => {
-            const [[key, value]] = Object.entries(item);
-            wordsToUpdate[key] = value;
-        });
-
+    const saveResults = (correctWords: Dictionary[]) => {
+        const wordsToUpdate: Dictionary = Object.assign({}, ...correctWords);
         const updatedDictionary = {
             ...dictionary,
             ...wordsToUpdate
         };
 
-        if (isOnline && user.isDataSynchronized && user.token) {
+        if (isOnline && user?.isDataSynchronized && user?.token) {
             WordService.saveResults(wordsToUpdate, user.token)
                 .catch(err => dispatch(SetError(errorHandler(err))));
         }
@@ -90,7 +93,7 @@ const PracticeScreen = props => {
     };
 
     const back = () => {
-        navigation.navigate({ name: 'Home' });
+        navigation.navigate('Home');
     };
 
     const navigateToStartPage = () => {
@@ -110,7 +113,11 @@ const PracticeScreen = props => {
     }, [isFocused, dictionary]);
 
     useEffect(() => {
-        if (!user?.token) {
+        if (!user || !user.token) {
+            return;
+        }
+
+        if (!user.lastTestDate) {
             return;
         }
 
@@ -161,7 +168,6 @@ const PracticeScreen = props => {
                 words={words}
                 allowedTestsCount={allowedTests}
                 unlearnedWordsCount={unlearnedWordsCount}
-                dictionary={dictionary}
                 onStart={startTest}
                 onReset={getCards}
                 onFinish={saveResults}

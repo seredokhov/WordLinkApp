@@ -4,17 +4,15 @@ import { COLORS } from '../../constants/theme';
 import RegistrationGuide from '../../components/form/registration-guide';
 import Input from '../../components/input';
 import Button from '../../components/button';
+import { ChangeNameScreenProps } from '../../types';
 
-const ChangePasswordScreen = props => {
+const ChangeNameScreen = (props: ChangeNameScreenProps) => {
     const { route, navigation } = props;
-    const [passwordValue, setPasswordValue] = useState('');
-    const [confirmPasswordValue, setConfirmPasswordValue] = useState('');
-    const isSubmitButtonDisabled = passwordValue.length < 5 ||
-        (passwordValue !== confirmPasswordValue);
+    const [nameValue, setNameValue] = useState('');
 
     const params = {
         ...route.params,
-        password: passwordValue
+        name: nameValue
     };
 
     const back = () => {
@@ -22,26 +20,17 @@ const ChangePasswordScreen = props => {
     };
 
     const next = () => {
-        navigation.navigate('ChangeSynchronizationScreen', params);
+        navigation.navigate('ChangePassword', params);
     };
 
     return (
         <View style={styles.screen}>
-            <RegistrationGuide title="Your password:">
+            <RegistrationGuide title="Your name:">
                 <View style={styles.inputWrap}>
                     <Input
-                        value={passwordValue}
-                        placeholder="Password..."
-                        onChangeText={setPasswordValue}
-                        secureTextEntry
-                    />
-                </View>
-                <View style={styles.inputWrap}>
-                    <Input
-                        value={confirmPasswordValue}
-                        placeholder="Confirm password..."
-                        onChangeText={setConfirmPasswordValue}
-                        secureTextEntry
+                        value={nameValue}
+                        placeholder="Name..."
+                        onChangeText={setNameValue}
                     />
                 </View>
                 <View style={styles.buttonsContainer}>
@@ -54,7 +43,7 @@ const ChangePasswordScreen = props => {
                     </View>
                     <View style={styles.buttonWrap}>
                         <Button
-                            disabled={isSubmitButtonDisabled}
+                            disabled={nameValue.length < 4}
                             text="Next"
                             onPress={next}
                         />
@@ -84,4 +73,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ChangePasswordScreen;
+export default ChangeNameScreen;

@@ -7,8 +7,9 @@ import AsyncStorageService from '../../services/async-storage-service';
 import { Login, Init, Logout } from '../../store/actions';
 import Button from '../../components/button';
 import { useIsFocused } from '@react-navigation/native';
+import { GetStartedScreenProps } from '../../types';
 
-const GetStartedScreen = props => {
+const GetStartedScreen = (props: GetStartedScreenProps) => {
     const { navigation } = props;
     const { store: { user }, dispatch } = useAppContext();
     const isFocused = useIsFocused();

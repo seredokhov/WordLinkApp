@@ -9,8 +9,9 @@ import BorderedHeader from '../../components/header/bordered-header';
 import { useIsFocused } from '@react-navigation/native';
 import Button from '../../components/button';
 import Loader from '../../components/loader';
+import { CardScreenProps } from '../../types';
 
-const CardsScreen = props => {
+const CardsScreen = (props: CardScreenProps) => {
     const { navigation } = props;
     const { store: { dictionary } } = useAppContext();
     const cardsData = Object.values(dictionary);
@@ -33,7 +34,7 @@ const CardsScreen = props => {
     };
 
     const back = () => {
-        navigation.navigate({ name: 'Home' });
+        navigation.navigate('Home');
     };
 
     useEffect(() => {

@@ -3,8 +3,9 @@ import { View, StyleSheet } from 'react-native';
 import { useAppContext } from '../../store/context';
 import { COLORS } from '../../constants/theme';
 import WordList from '../../components/word-list';
+import { DictionaryScreenProps } from '../../types';
 
-const DictionaryScreen = props => {
+const DictionaryScreen = (props: DictionaryScreenProps) => {
     const { navigation } = props;
     const { store: { filterMask, dictionary } } = useAppContext();
     const words = Object.values(dictionary);

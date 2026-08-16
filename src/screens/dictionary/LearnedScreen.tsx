@@ -2,14 +2,15 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useAppContext } from '../../store/context';
 import WordList from '../../components/word-list';
+import { LearnedScreenProps } from '../../types';
 
-const BookmarksScreen = props => {
+const LearnedScreen = (props: LearnedScreenProps) => {
     const { navigation } = props;
     const { store: { filterMask, dictionary } } = useAppContext();
     const words = Object.values(dictionary);
 
     const filteredWords = words.filter(el => {
-        if (!el.isFavorite) {
+        if (!el.isLearned) {
             return false;
         }
 
@@ -34,4 +35,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default BookmarksScreen;
+export default LearnedScreen;

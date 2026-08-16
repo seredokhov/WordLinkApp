@@ -6,8 +6,9 @@ import Content from '../../components/content';
 import WordContainer from '../../components/container/word-container';
 import SearchContainer from '../../components/container/search-container';
 import BorderedHeader from '../../components/header/bordered-header';
+import { HomeScreenProps } from '../../types';
 
-const HomeScreen = props => {
+const HomeScreen = (props: HomeScreenProps) => {
     const { navigation } = props;
 
     const navigateToProfile = () => {

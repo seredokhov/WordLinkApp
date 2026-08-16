@@ -21,7 +21,7 @@ const RegistrationNavigator = () => {
             <Stack.Screen name="ChangeLogin" component={ChangeLoginScreen} />
             <Stack.Screen name="ChangeName" component={ChangeNameScreen} />
             <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
-            <Stack.Screen name="ChangeSynchronizationScreen" component={ChangeSynchronizationScreen} />
+            <Stack.Screen name="ChangeSynchronization" component={ChangeSynchronizationScreen} />
         </Stack.Navigator>
     );
 };

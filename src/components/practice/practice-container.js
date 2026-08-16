@@ -166,7 +166,8 @@ const styles = StyleSheet.create({
 });
 
 const defaultProps = {
-    data: [],
+    words: [],
+    unlearnedWordsCount: 0,
     allowedTestsCount: 0,
     onReset: () => {},
     onStart: () => {},
@@ -174,7 +175,14 @@ const defaultProps = {
 };
 
 PracticeContainer.propTypes = {
-    data: PropTypes.array,
+    words: PropTypes.arrayOf(
+        PropTypes.shape({
+            entity: PropTypes.object.isRequired,
+            suggestions: PropTypes.arrayOf(PropTypes.string).isRequired,
+            translation: PropTypes.string.isRequired,
+        })
+    ),
+    unlearnedWordsCount: PropTypes.number,
     allowedTestsCount: PropTypes.number,
     onReset: PropTypes.func,
     onStart: PropTypes.func,

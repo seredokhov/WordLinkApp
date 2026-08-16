@@ -9,8 +9,9 @@ import ConfirmModal from '../../components/modal/confirm-modal';
 import DatabaseContainer from '../../components/container/database-container';
 import Button from '../../components/button';
 import Title from '../../components/title';
+import { ProfileScreenProps } from '../../types';
 
-const ProfileScreen = props => {
+const ProfileScreen = (props: ProfileScreenProps) => {
     const { navigation } = props;
     const { store: { user, dictionary } } = useAppContext();
     const { name, login, token } = user || {};
@@ -21,8 +22,8 @@ const ProfileScreen = props => {
 
     const closeConformModal = () => setConfirmModalOpen(false);
 
-    const back = () => {
-        navigation.navigate({ name: 'Home' });
+    const back = (): void => {
+        navigation.navigate('Home');
     };
 
     const logout = () => {

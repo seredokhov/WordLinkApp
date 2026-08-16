@@ -4,8 +4,9 @@ import { COLORS } from '../../constants/theme';
 import Input from '../../components/input';
 import Button from '../../components/button';
 import RegistrationGuide from '../../components/form/registration-guide';
+import { ChangeLoginScreenProps } from '../../types';
 
-const ChangeLoginScreen = props => {
+const ChangeLoginScreen = (props: ChangeLoginScreenProps) => {
     const { navigation } = props;
     const [loginValue, setLoginValue] = useState('');
 

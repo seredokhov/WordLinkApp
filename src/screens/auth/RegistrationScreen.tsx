@@ -2,13 +2,14 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { COLORS } from '../../constants/theme';
 import Header from '../../components/header';
-import LoginForm from '../../components/form/login-form';
+import RegistrationNavigator from '../../navigators/RegistrationNavigator';
+import { RegistrationScreenProps } from '../../types';
 
-const LoginScreen = props => {
+const RegistrationScreen = (props: RegistrationScreenProps) => {
     const { navigation } = props;
 
     const back = () => {
-        navigation.navigate({ name: 'GetStarted' });
+        navigation.navigate('GetStarted');
     };
 
     return (
@@ -16,11 +17,9 @@ const LoginScreen = props => {
             <Header
                 onLeftBtnPress={back}
             >
-                <Text style={styles.title}>Login</Text>
+                <Text style={styles.title}>Registration</Text>
             </Header>
-            <View style={styles.formContainer}>
-                <LoginForm />
-            </View>
+            <RegistrationNavigator />
         </View>
     );
 };
@@ -35,12 +34,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: COLORS.white,
         textAlign: 'center'
-    },
-    formContainer: {
-        flex: 1,
-        alignSelf: 'center',
-        justifyContent: 'center'
     }
 });
 
-export default LoginScreen;
+export default RegistrationScreen;

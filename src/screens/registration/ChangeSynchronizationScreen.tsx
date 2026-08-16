@@ -8,13 +8,14 @@ import { Init, Login, SetError } from '../../store/actions';
 import { errorHandler } from '../../utils';
 import { useAppContext } from '../../store/context';
 import { COLORS } from '../../constants/theme';
+import { ChangeSynchronizationScreenProps } from '../../types';
 
-const ChangeSynchronizationScreen = props => {
+const ChangeSynchronizationScreen = (props: ChangeSynchronizationScreenProps) => {
     const { route } = props;
     const { name, login, password } = route.params;
     const { store: { dictionary }, dispatch } = useAppContext();
 
-    const createUser = async isDataSynchronized => {
+    const createUser = async (isDataSynchronized: boolean) => {
         const body = {
             password,
             name,
