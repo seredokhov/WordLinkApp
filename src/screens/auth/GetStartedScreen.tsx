@@ -8,6 +8,7 @@ import { Login, Init, Logout } from '../../store/actions';
 import Button from '../../components/button';
 import { useIsFocused } from '@react-navigation/native';
 import { GetStartedScreenProps } from '../../types';
+import { resetToApp } from '../../utils';
 
 const GetStartedScreen = (props: GetStartedScreenProps) => {
     const { navigation } = props;
@@ -21,6 +22,7 @@ const GetStartedScreen = (props: GetStartedScreenProps) => {
 
         dispatch(Init(storageData));
         dispatch(Login(GUEST));
+        resetToApp(navigation);
     };
 
     useEffect(() => {

@@ -5,6 +5,7 @@ import { COLORS } from '../../constants/theme';
 import AsyncStorageService from '../../services/async-storage-service';
 import { Init, Login, SetError } from '../../store/actions';
 import { CheckAuthScreenProps } from '../../types';
+import { resetToApp } from '../../utils';
 
 const CheckAuthScreen = (props: CheckAuthScreenProps) => {
     const { navigation } = props;
@@ -38,10 +39,7 @@ const CheckAuthScreen = (props: CheckAuthScreenProps) => {
             return;
         }
 
-        navigation.getParent()?.reset({
-            index: 0,
-            routes: [{ name: 'App' }],
-        });
+        resetToApp(navigation);
     }, [user, isLoadedAppData]);
 
     return (

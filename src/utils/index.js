@@ -144,11 +144,27 @@ const forSlideScreenAnimation = ({ current, next, inverted, layouts: { screen } 
     };
 };
 
+const resetToApp = (navigation) => {
+    let rootNavigation = navigation;
+    let parent = navigation.getParent();
+
+    while (parent) {
+        rootNavigation = parent;
+        parent = parent.getParent();
+    }
+
+    rootNavigation.reset({
+        index: 0,
+        routes: [{ name: 'App' }],
+    });
+};
+
 export {
     randomize,
     getRandomEntities,
     errorHandler,
     prepareWordsToSynchronize,
     forFadeScreenAnimation,
-    forSlideScreenAnimation
+    forSlideScreenAnimation,
+    resetToApp
 };

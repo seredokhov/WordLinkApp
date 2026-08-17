@@ -5,13 +5,13 @@ import Button from '../../components/button';
 import UserService from '../../services/user-service';
 import AsyncStorageService from '../../services/async-storage-service';
 import { Init, Login, SetError } from '../../store/actions';
-import { errorHandler } from '../../utils';
+import { errorHandler, resetToApp } from '../../utils';
 import { useAppContext } from '../../store/context';
 import { COLORS } from '../../constants/theme';
 import { ChangeSynchronizationScreenProps } from '../../types';
 
 const ChangeSynchronizationScreen = (props: ChangeSynchronizationScreenProps) => {
-    const { route } = props;
+    const { navigation, route } = props;
     const { name, login, password } = route.params;
     const { store: { dictionary }, dispatch } = useAppContext();
 
@@ -33,6 +33,7 @@ const ChangeSynchronizationScreen = (props: ChangeSynchronizationScreenProps) =>
                     .then(() =>{
                         dispatch(Login(user));
                         dispatch(Init(dictionary));
+                        resetToApp(navigation);
                     });
             })
             .catch(err => dispatch(SetError(errorHandler(err))));

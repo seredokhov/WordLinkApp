@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useAppContext } from '../../store/context';
 import {Init, Login, SetError} from '../../store/actions';
 import UserService from '../../services/user-service';
@@ -7,10 +8,11 @@ import AsyncStorageService from '../../services/async-storage-service';
 import WordService from '../../services/word-service';
 import Input from '../input';
 import Button from '../button';
-import { errorHandler } from '../../utils';
+import { errorHandler, resetToApp } from '../../utils';
 
 const LoginForm = () => {
     const { dispatch } = useAppContext();
+    const navigation = useNavigation();
 
     const [loginValue, setLoginValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
@@ -33,6 +35,7 @@ const LoginForm = () => {
                         ]).then(() => {
                             dispatch(Login(user));
                             dispatch(Init(words));
+                            resetToApp(navigation);
                         });
                     });
 
