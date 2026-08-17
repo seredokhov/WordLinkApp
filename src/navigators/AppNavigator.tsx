@@ -1,11 +1,12 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import MainNavigator from './MainNavigator';
 import AuthNavigator from './AuthNavigator';
 import { forSlideScreenAnimation } from '../utils';
+import { RootStackParamList } from '../types';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 const theme = {
     ...DefaultTheme,

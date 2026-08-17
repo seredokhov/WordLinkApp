@@ -1,12 +1,13 @@
 import React from 'react';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator, MaterialTopTabNavigationOptions } from '@react-navigation/material-top-tabs';
 import { COLORS } from '../constants/theme';
 import { DictionaryScreen, BookmarksScreen, LearnedScreen } from '../screens';
 import Tab from '../components/tab';
+import { DictionaryTabParamList, DictionaryTabScreenOptionsArgs } from '../types';
 
-const TabNavigator = createMaterialTopTabNavigator();
+const TabNavigator = createMaterialTopTabNavigator<DictionaryTabParamList>();
 
-const screenOptions = options => {
+const screenOptions = (options: DictionaryTabScreenOptionsArgs): MaterialTopTabNavigationOptions  => {
     const { route } = options;
     const { count } = route.params || {};
 

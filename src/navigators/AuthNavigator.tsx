@@ -1,11 +1,12 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import { LoginScreen, RegistrationScreen, GetStartedScreen, CheckAuthScreen } from '../screens';
 import {forFadeScreenAnimation, forSlideScreenAnimation} from '../utils';
+import { AuthStackParamList } from '../types';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<AuthStackParamList>();
 
-const screenOptions = {
+const screenOptions: StackNavigationOptions = {
     headerShown: false,
     cardStyleInterpolator: forSlideScreenAnimation
 };

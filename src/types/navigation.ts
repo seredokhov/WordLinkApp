@@ -1,12 +1,24 @@
-import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
+import type { CompositeScreenProps, NavigatorScreenParams, RouteProp } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { StackScreenProps } from '@react-navigation/stack';
+import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 
 export type AuthStackParamList = {
     CheckAuth: undefined;
     GetStarted: undefined;
     Login: undefined;
     Registration: undefined;
+};
+
+export type RegistrationStackParamList = {
+    ChangeLogin: undefined;
+    ChangeName: { login: string };
+    ChangePassword: { login: string; name: string };
+    ChangeSynchronization: {
+        login: string;
+        name: string;
+        password: string;
+    };
 };
 
 export type MainTabParamList = {
@@ -21,21 +33,18 @@ export type RootStackParamList = {
     App: NavigatorScreenParams<MainTabParamList> | undefined;
 };
 
-export type RegistrationStackParamList = {
-    ChangeLogin: undefined;
-    ChangeName: { login: string };
-    ChangePassword: { login: string; name: string };
-    ChangeSynchronization: {
-        login: string;
-        name: string;
-        password: string;
-    };
-};
-
 export type DictionaryTabParamList = {
     Dictionary: { count?: number } | undefined;
     Bookmarks: { count?: number } | undefined;
     Learned: { count?: number } | undefined;
+};
+
+export type MainTabScreenOptionsArgs = {
+    route: RouteProp<MainTabParamList, keyof MainTabParamList>;
+};
+
+export type DictionaryTabScreenOptionsArgs = {
+    route: RouteProp<DictionaryTabParamList, keyof DictionaryTabParamList>;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
@@ -48,7 +57,7 @@ export type MainTabScreenProps<T extends keyof MainTabParamList> =
     >;
 
 export type DictionaryTabScreenProps<T extends keyof DictionaryTabParamList> =
-    BottomTabScreenProps<DictionaryTabParamList, T>;
+    MaterialTopTabScreenProps<DictionaryTabParamList, T>;
 
 export type AuthStackScreenProps<T extends keyof AuthStackParamList> =
     CompositeScreenProps<StackScreenProps<AuthStackParamList, T>, RootStackScreenProps<keyof RootStackParamList>>;

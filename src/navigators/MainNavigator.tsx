@@ -1,26 +1,27 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator, BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { COLORS } from '../constants/theme';
 import { HomeScreen, CardsScreen, ProfileScreen, PracticeScreen } from '../screens';
 import Tab from '../components/tab';
+import { MainTabParamList, MainTabScreenOptionsArgs } from '../types';
 
-const TabNavigator = createBottomTabNavigator();
+const TabNavigator = createBottomTabNavigator<MainTabParamList>();
 
-const screenOptions = options => {
+const screenOptions = (options: MainTabScreenOptionsArgs): BottomTabNavigationOptions => {
     const { route } = options;
 
-    const iconsMap = {
-        'Home': 'home',
-        'Cards': 'layers',
-        'Practice': 'school',
-        'Profile': 'person-circle',
+    const iconsMap: Record<keyof MainTabParamList, string> = {
+        Home: 'home',
+        Cards: 'layers',
+        Practice: 'school',
+        Profile: 'person-circle',
     };
 
-    const labelsMap = {
-        'Home': 'Home',
-        'Cards': 'Cards',
-        'Practice': 'Practice',
-        'Profile': 'Profile',
+    const labelsMap: Record<keyof MainTabParamList, string> = {
+        Home: 'Home',
+        Cards: 'Cards',
+        Practice: 'Practice',
+        Profile: 'Profile',
     };
 
     return {
@@ -28,10 +29,10 @@ const screenOptions = options => {
         tabBarActiveTintColor: COLORS.lightRed,
         tabBarInactiveTintColor: COLORS.darkGray,
         tabBarItemStyle: {
-            paddingTop: 3
+            paddingTop: 3,
         },
         tabBarShowLabel: false,
-        tabBarIcon:({focused}) => {
+        tabBarIcon: ({ focused }) => {
             const color = focused ? COLORS.lightRed : COLORS.darkGray;
             const label = labelsMap[route.name];
             const icon = iconsMap[route.name];
@@ -45,7 +46,7 @@ const screenOptions = options => {
                     color={color}
                 />
             );
-        }
+        },
     };
 };
 
@@ -61,5 +62,3 @@ const MainNavigator = () => {
 };
 
 export default MainNavigator;
-
-

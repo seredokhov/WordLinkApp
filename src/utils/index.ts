@@ -1,6 +1,10 @@
-import { Animated } from "react-native";
+import { Animated } from 'react-native';
+import type { StackCardStyleInterpolator } from '@react-navigation/stack';
+import type { AxiosError } from 'axios';
+import type { Dictionary, PracticeCard, Word, WordsToSynchronize } from '../types';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-const randomize = array => {
+const randomize = <T>(array: T[]): T[] => {
     for (let i = array.length - 1; i > 0; i--) {
         const randomIndex = Math.floor(Math.random() * (i + 1));
         [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
@@ -8,12 +12,16 @@ const randomize = array => {
     return array;
 };
 
-const getRandomTranslations = (data, excludeTranslation, limit) => {
+const getRandomTranslations = (
+    data: Dictionary,
+    excludeTranslation: string,
+    limit: number,
+): string[] => {
     const translations = Object.values(data).map(entity => entity.translate);
     const filteredTranslations = translations.filter(translation => translation !== excludeTranslation);
     const uniqueTranslations = [...new Set(filteredTranslations)];
     const maxLength = Math.min(uniqueTranslations.length, limit - 1);
-    const randomTranslations = [];
+    const randomTranslations: string[] = [];
 
     for (let i = 0; i < maxLength; i++) {
         const randomIndex = Math.floor(Math.random() * uniqueTranslations.length);
@@ -25,9 +33,13 @@ const getRandomTranslations = (data, excludeTranslation, limit) => {
     return randomTranslations;
 };
 
-const getRandomEntities = (data, entitiesLimit, translationsLimit) => {
+const getRandomEntities = (
+    data: Dictionary,
+    entitiesLimit: number,
+    translationsLimit: number,
+): PracticeCard[] => {
     const selectedEntities = Object.keys(data).sort(() => Math.random() - 0.5).slice(0, entitiesLimit);
-    const result = [];
+    const result: PracticeCard[] = [];
 
     selectedEntities.forEach(entity => {
         const translation = data[entity].translate;
@@ -44,29 +56,37 @@ const getRandomEntities = (data, entitiesLimit, translationsLimit) => {
     return result;
 };
 
-const errorHandler = err => {
-    if (err.response) {
-        return err.response.data.message;
-    }
-
+const errorHandler = (err: unknown): string => {
     if (typeof err === 'string') {
         return err;
     }
 
-    return 'Something wrong';
-}
+    const axiosError = err as AxiosError<{ message?: string }>;
+    if (axiosError.response?.data?.message) {
+        return axiosError.response.data.message;
+    }
 
-const prepareWordsToSynchronize = (local, remote) => {
-    const combinedWords = local.reduce((result, localItem) => {
+    return 'Something wrong';
+};
+
+const prepareWordsToSynchronize = (
+    local: Word[],
+    remote: Word[],
+): WordsToSynchronize => {
+    const combinedWords = local.reduce<WordsToSynchronize>((result, localItem) => {
         const remoteItem = remote.find((item) => item.id === localItem.id);
 
         if (!remoteItem) {
-            !result.toCreate && (result.toCreate = {});
+            if (!result.toCreate) {
+                result.toCreate = {};
+            }
             result.toCreate[localItem.word] = { ...localItem };
         }
 
         if (remoteItem && new Date(localItem.lastUpdate) > new Date(remoteItem.lastUpdate)) {
-            !result.toUpdate && (result.toUpdate = {});
+            if (!result.toUpdate) {
+                result.toUpdate = {};
+            }
             result.toUpdate[localItem.word] = { ...localItem };
         }
 
@@ -82,31 +102,30 @@ const prepareWordsToSynchronize = (local, remote) => {
             return;
         }
 
-        !combinedWords.toDownload && (combinedWords.toDownload = {})
+        if (!combinedWords.toDownload) {
+            combinedWords.toDownload = {};
+        }
         combinedWords.toDownload[remoteItem.word] = { ...remoteItem };
     });
 
     return combinedWords;
 };
 
-const forFadeScreenAnimation = ({ current, next }) => {
-    const opacity = Animated.add(
-        current.progress,
-        next ? next.progress : 0
-    ).interpolate({
-        inputRange: [0, 1, 2],
-        outputRange: [0, 1, 0],
-    });
+const forFadeScreenAnimation: StackCardStyleInterpolator = ({ current }) => ({
+    cardStyle: {
+        opacity: current.progress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 1],
+        }),
+    },
+});
 
-    return {
-        leftButtonStyle: { opacity },
-        rightButtonStyle: { opacity },
-        titleStyle: { opacity },
-        backgroundStyle: { opacity },
-    };
-};
-
-const forSlideScreenAnimation = ({ current, next, inverted, layouts: { screen } }) => {
+const forSlideScreenAnimation: StackCardStyleInterpolator = ({
+    current,
+    next,
+    inverted,
+    layouts: { screen },
+}) => {
     const progress = Animated.add(
         current.progress.interpolate({
             inputRange: [0, 1],
@@ -130,9 +149,9 @@ const forSlideScreenAnimation = ({ current, next, inverted, layouts: { screen } 
                         progress.interpolate({
                             inputRange: [0, 1, 2],
                             outputRange: [
-                                screen.width, // Focused, but offscreen in the beginning
-                                0, // Fully focused
-                                screen.width * -0.3, // Fully unfocused
+                                screen.width,
+                                0,
+                                screen.width * -0.3,
                             ],
                             extrapolate: 'clamp',
                         }),
@@ -144,15 +163,13 @@ const forSlideScreenAnimation = ({ current, next, inverted, layouts: { screen } 
     };
 };
 
-const resetToApp = (navigation) => {
-    let rootNavigation = navigation;
+const resetToApp = (navigation: NavigationProp<ParamListBase>): void => {
+    let rootNavigation: NavigationProp<ParamListBase> = navigation;
     let parent = navigation.getParent();
-
     while (parent) {
         rootNavigation = parent;
         parent = parent.getParent();
     }
-
     rootNavigation.reset({
         index: 0,
         routes: [{ name: 'App' }],
@@ -160,11 +177,11 @@ const resetToApp = (navigation) => {
 };
 
 export {
+    resetToApp,
     randomize,
     getRandomEntities,
     errorHandler,
     prepareWordsToSynchronize,
     forFadeScreenAnimation,
-    forSlideScreenAnimation,
-    resetToApp
+    forSlideScreenAnimation
 };

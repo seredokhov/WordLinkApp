@@ -1,16 +1,17 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import {
     ChangeLoginScreen,
     ChangeNameScreen,
     ChangePasswordScreen,
     ChangeSynchronizationScreen
 } from '../screens';
-import { forFadeScreenAnimation } from "../utils";
+import { forFadeScreenAnimation } from '../utils';
+import { RegistrationStackParamList } from '../types';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RegistrationStackParamList>();
 
-const screenOptions = {
+const screenOptions: StackNavigationOptions = {
     headerShown: false,
     cardStyleInterpolator: forFadeScreenAnimation
 };
