@@ -1,9 +1,29 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Text, TouchableHighlight, View, StyleSheet } from 'react-native';
+import { Text, TouchableHighlight, View, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import { COLORS } from '../../constants/theme';
+import { noop } from '../../utils';
 
-const Button = props => {
+type ButtonProps = {
+    text: string;
+    disabled?: boolean;
+    active?: boolean;
+    color?: string;
+    backgroundColor?: string;
+    underlayColor?: string;
+    onPress?: () => void;
+};
+
+
+const defaultProps = {
+    disabled: false,
+    active: false,
+    color: COLORS.white,
+    backgroundColor: COLORS.lighterRed,
+    underlayColor: COLORS.darkerRed,
+    onPress: noop
+} satisfies Partial<ButtonProps>;
+
+const Button = (props: ButtonProps) => {
     const {
         text,
         disabled,
@@ -11,17 +31,17 @@ const Button = props => {
         color,
         backgroundColor,
         underlayColor,
-        onPress = () => {}
+        onPress
     } = { ...defaultProps, ...props };
 
-    const buttonStyles = [
+    const buttonStyles: StyleProp<ViewStyle> = [
         styles.button,
         { backgroundColor },
-        disabled && styles.buttonDisabled,
-        active && styles.buttonActive
+        disabled ? styles.buttonDisabled : undefined,
+        active ? styles.buttonActive : undefined
     ];
 
-    const textStyles = [
+    const textStyles: StyleProp<TextStyle> = [
         styles.buttonText,
         { color }
     ];
@@ -63,24 +83,5 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
 });
-
-const defaultProps = {
-    disabled: false,
-    active: false,
-    color: COLORS.white,
-    backgroundColor: COLORS.lighterRed,
-    underlayColor: COLORS.darkerRed,
-    onPress: () => {}
-};
-
-Button.propTypes = {
-    text: PropTypes.string.isRequired,
-    disabled: PropTypes.bool,
-    active: PropTypes.bool,
-    color: PropTypes.string,
-    backgroundColor: PropTypes.string,
-    underlayColor: PropTypes.string,
-    onPress: PropTypes.func
-};
 
 export default Button;

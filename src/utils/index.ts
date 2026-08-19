@@ -4,6 +4,8 @@ import type { AxiosError } from 'axios';
 import type { Dictionary, PracticeCard, Word, WordsToSynchronize } from '../types';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
+const noop = () => {};
+
 const randomize = <T>(array: T[]): T[] => {
     for (let i = array.length - 1; i > 0; i--) {
         const randomIndex = Math.floor(Math.random() * (i + 1));
@@ -177,6 +179,7 @@ const resetToApp = (navigation: NavigationProp<ParamListBase>): void => {
 };
 
 export {
+    noop,
     resetToApp,
     randomize,
     getRandomEntities,

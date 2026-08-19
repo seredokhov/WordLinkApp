@@ -1,10 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import { COLORS, SIZES } from '../../constants/theme';
 
-const Tab = props => {
+type TabProps = {
+    icon: string;
+    type: "column" | "row" | "row-reverse" | "column-reverse" | undefined;
+    color?: string;
+    count?: number;
+    label?: string;
+    size?: number;
+    fontSize?: number;
+};
+
+const defaultProps = {
+    type: 'column',
+    label: '',
+    count: null,
+    fontSize: 13,
+    color: COLORS.gray
+};
+
+const Tab = (props: TabProps) => {
     const {
         label,
         count,
@@ -15,15 +32,12 @@ const Tab = props => {
         type
     } = { ...defaultProps, ...props };
 
-    const tabStyles = [
+    const tabStyles: StyleProp<ViewStyle> = [
         styles.tab,
-        {
-            flexDirection: type,
-        }
+        { flexDirection: type }
     ];
 
-    const labelStyles = [
-        styles.label,
+    const labelStyles: StyleProp<TextStyle> = [
         {
             marginLeft: type === 'row' ? SIZES.baseMargin : 0,
             color,
@@ -54,23 +68,5 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }
 });
-
-const defaultProps = {
-    type: 'column',
-    label: '',
-    count: null,
-    fontSize: 13,
-    color: COLORS.gray
-};
-
-Tab.propTypes = {
-    icon: PropTypes.string.isRequired,
-    size: PropTypes.number.isRequired,
-    fontSize: PropTypes.number,
-    label: PropTypes.string,
-    count: PropTypes.number,
-    color: PropTypes.string,
-    type: PropTypes.string
-};
 
 export default Tab;

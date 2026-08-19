@@ -6,7 +6,7 @@ import { reducer, initialState } from './src/store/reducer';
 import AlertModal from './src/components/modal/alert-modal';
 import { LogBox } from 'react-native';
 import AppNavigator from "./src/navigators/AppNavigator";
-import NetInfo from "@react-native-community/netinfo";
+import NetInfo, { NetInfoState } from "@react-native-community/netinfo";
 import { ToggleInternetConnection } from "./src/store/actions";
 
 LogBox.ignoreLogs(['new NativeEventEmitter']);
@@ -16,9 +16,8 @@ const App = () => {
     const [store, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() => {
-        NetInfo.addEventListener(state => {
-            const { isConnected} = state;
-            dispatch(ToggleInternetConnection(isConnected));
+        NetInfo.addEventListener((state: NetInfoState) => {
+            dispatch(ToggleInternetConnection(state.isConnected || false));
         });
     }, []);
 

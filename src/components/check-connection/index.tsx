@@ -1,10 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '../../constants/theme';
 
-const CheckConnection = props => {
+type CheckConnectionProps = {
+    text: string;
+};
+
+const defaultProps = {
+    text: 'Check your internet connection'
+};
+
+const CheckConnection = (props: CheckConnectionProps) => {
     const { text } = { ...defaultProps, ...props };
 
     return (
@@ -26,13 +33,5 @@ const styles = StyleSheet.create({
         fontSize: 19
     }
 });
-
-const defaultProps = {
-    text: 'Check your internet connection'
-};
-
-CheckConnection.propTypes = {
-    text: PropTypes.string
-};
 
 export default CheckConnection;

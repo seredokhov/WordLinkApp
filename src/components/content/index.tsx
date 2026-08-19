@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ViewProps } from 'react-native';
 import { COLORS } from '../../constants/theme';
 
-const Content = props => {
+const Content = (props: ViewProps) => {
     const { children } = props;
     return (
         <View style={styles.wrap}>
@@ -12,10 +11,6 @@ const Content = props => {
             </View>
         </View>
     );
-};
-
-Content.propTypes = {
-    children: PropTypes.node.isRequired
 };
 
 const styles = StyleSheet.create({

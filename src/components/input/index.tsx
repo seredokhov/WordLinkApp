@@ -1,10 +1,39 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { View, Text, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableHighlight, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '../../constants/theme';
+import { noop } from '../../utils';
 
-const Input = props => {
+type InputProps = {
+    value?: string;
+    maxLength?: number;
+    placeholder?: string;
+    icon?: string;
+    iconText?: string;
+    buttonIcon?: string;
+    iconColor?: string;
+    buttonIconColor?: string;
+    buttonColor?: string;
+    secureTextEntry?: boolean;
+    onButtonPress?: () => void;
+    onChangeText?: (value: string) => void;
+};
+
+const defaultProps = {
+    value: '',
+    placeholder : '',
+    icon: '',
+    iconText: '',
+    buttonIcon: '',
+    maxLength: undefined,
+    iconColor: COLORS.lightRed,
+    buttonIconColor: COLORS.white,
+    secureTextEntry: false,
+    onButtonPress: noop,
+    onChangeText: noop
+} satisfies Partial<InputProps>;
+
+const Input = (props: InputProps) => {
     const {
         value,
         icon,
@@ -12,14 +41,14 @@ const Input = props => {
         iconColor,
         buttonIcon,
         buttonIconColor,
-        onButtonPress,
-        onChangeText,
         placeholder,
         maxLength,
-        secureTextEntry
+        secureTextEntry,
+        onButtonPress,
+        onChangeText,
     } = { ...defaultProps, ...props };
 
-    const inputStyles = [
+    const inputStyles: StyleProp<ViewStyle> = [
         styles.input,
         {
             paddingHorizontal: !(icon || iconText) ? 25 : 55
@@ -128,33 +157,5 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
 });
-
-const defaultProps = {
-    value: '',
-    maxLength: null,
-    placeholder : '',
-    icon: '',
-    iconText: '',
-    buttonIcon: '',
-    iconColor: COLORS.lightRed,
-    buttonIconColor: COLORS.white,
-    secureTextEntry: false,
-    onButtonPress: () => {},
-    onChangeText: () => {}
-};
-
-Input.propTypes = {
-    value: PropTypes.string,
-    maxLength: PropTypes.number,
-    placeholder : PropTypes.string,
-    icon: PropTypes.string,
-    iconText: PropTypes.string,
-    buttonIcon: PropTypes.string,
-    iconColor: PropTypes.string,
-    buttonIconColor: PropTypes.string,
-    onButtonPress: PropTypes.func,
-    onChangeText: PropTypes.func,
-    secureTextEntry: PropTypes.bool
-};
 
 export default Input;

@@ -1,9 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const Title = props => {
+type TitleProps = {
+    title: string;
+    iconName?: string;
+};
+
+const defaultProps = {
+    iconName: ''
+};
+
+const Title = (props: TitleProps) => {
     const { title, iconName } = { ...defaultProps, ...props };
 
     return (
@@ -39,15 +47,5 @@ const styles = StyleSheet.create({
         marginRight: 10
     }
 });
-
-
-const defaultProps = {
-    iconName: ''
-};
-
-Title.propTypes = {
-    title: PropTypes.string.isRequired,
-    iconName: PropTypes.string
-};
 
 export default Title;

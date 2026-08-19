@@ -1,21 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, StyleSheet, TouchableHighlight, ViewProps } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '../../constants/theme';
 
-const Header = props => {
+type HeaderProps = ViewProps & {
+    onLeftBtnPress?: () => void;
+};
+
+const Header = (props: HeaderProps) => {
     const {
         children,
         onLeftBtnPress,
-    } = { ...defaultProps, ...props };
+    } = props;
 
     return (
         <View style={styles.wrap}>
             {
                 onLeftBtnPress && (
                     <TouchableHighlight
-                        style={[styles.btn, styles.leftBtn]}
+                        style={styles.btn}
                         underlayColor={COLORS.lightRed}
                         onPress={onLeftBtnPress}
                     >
@@ -30,17 +33,6 @@ const Header = props => {
             { children }
         </View>
     );
-};
-
-const defaultProps = {
-    onLeftBtnPress: undefined,
-    onRightBtnPress: undefined,
-};
-
-Header.propTypes = {
-    children: PropTypes.node.isRequired,
-    onLeftBtnPress: PropTypes.func,
-    onRightBtnPress: PropTypes.func,
 };
 
 const styles = StyleSheet.create({

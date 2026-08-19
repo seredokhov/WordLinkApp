@@ -1,10 +1,33 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Text, TouchableHighlight, View, StyleSheet } from 'react-native';
+import { Text, TouchableHighlight, View, StyleSheet, ViewStyle, StyleProp, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS, SIZES } from '../../constants/theme';
+import { noop } from '../../utils';
 
-const IconButton = props => {
+type IconButtonProps = {
+    disabled?: boolean;
+    active?: boolean;
+    color?: string;
+    backgroundColor?: string;
+    borderColor?: string;
+    underlayColor?: string;
+    text?: string;
+    icon?: string;
+    onPress?: () => void;
+};
+
+const defaultProps = {
+    disabled: false,
+    active: false,
+    color: COLORS.white,
+    backgroundColor: COLORS.lighterRed,
+    underlayColor: COLORS.darkerRed,
+    text: '',
+    icon: '',
+    onPress: noop
+} satisfies Partial<IconButtonProps>;
+
+const IconButton = (props: IconButtonProps) => {
     const {
         text,
         icon,
@@ -17,19 +40,18 @@ const IconButton = props => {
         onPress
     } = { ...defaultProps, ...props };
 
-    const buttonStyles = [
+    const buttonStyles: StyleProp<ViewStyle> = [
         styles.button,
         { backgroundColor, borderColor },
-        borderColor && styles.buttonBordered,
-        disabled && styles.buttonDisabled,
-        active && styles.buttonActive
+        borderColor ? styles.buttonBordered : undefined,
+        disabled ? styles.buttonDisabled : undefined,
+        active ? styles.buttonActive : undefined
     ];
 
-    const textStyles = [
+    const textStyles: StyleProp<TextStyle> = [
         styles.buttonText,
         { color }
     ];
-
 
     return (
         <TouchableHighlight
@@ -76,28 +98,5 @@ const styles = StyleSheet.create({
         fontSize: 11
     },
 });
-
-const defaultProps = {
-    disabled: false,
-    active: false,
-    color: COLORS.white,
-    backgroundColor: COLORS.lighterRed,
-    underlayColor: COLORS.darkerRed,
-    text: '',
-    icon: '',
-    onPress: () => {}
-};
-
-IconButton.propTypes = {
-    disabled: PropTypes.bool,
-    active: PropTypes.bool,
-    color: PropTypes.string,
-    backgroundColor: PropTypes.string,
-    borderColor: PropTypes.string,
-    underlayColor: PropTypes.string,
-    text: PropTypes.string,
-    icon: PropTypes.string,
-    onPress: PropTypes.func
-};
 
 export default IconButton;

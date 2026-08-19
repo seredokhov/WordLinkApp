@@ -1,9 +1,24 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
+import React from 'react';
+import { View, ActivityIndicator, StyleSheet, Text, StyleProp, ViewStyle, DimensionValue } from 'react-native';
 import { COLORS } from '../../constants/theme';
 
-const Loader = props => {
+type LoaderProps = {
+    height?: DimensionValue;
+    text?: string;
+    backgroundColor?: string;
+    color?: string;
+    iconSize?: number;
+};
+
+const defaultProps = {
+    height: '100%',
+    iconSize: 30,
+    text: '',
+    backgroundColor: COLORS.white,
+    color: COLORS.gray
+} satisfies Partial<LoaderProps>;
+
+const Loader = (props: LoaderProps) => {
     const {
         text,
         iconSize,
@@ -12,12 +27,9 @@ const Loader = props => {
         color
     } = { ...defaultProps, ...props };
 
-    const preloaderStyles = [
+    const preloaderStyles: StyleProp<ViewStyle> = [
         styles.preloader,
-        {
-            height,
-            backgroundColor
-        }
+        { height, backgroundColor }
     ];
 
     return (
@@ -30,21 +42,6 @@ const Loader = props => {
             <ActivityIndicator size={iconSize} color={color}/>
         </View>
     );
-};
-
-const defaultProps = {
-    height: '100%',
-    iconSize: 30,
-    text: '',
-    backgroundColor: COLORS.white,
-    color: COLORS.gray
-};
-
-Loader.propTypes = {
-    iconSize: PropTypes.number.isRequired,
-    color: PropTypes.string,
-    backgroundColor: PropTypes.string,
-    height: PropTypes.string,
 };
 
 const styles = StyleSheet.create({
