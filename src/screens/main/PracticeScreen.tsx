@@ -14,6 +14,7 @@ import Button from '../../components/button';
 import UserService from '../../services/user-service';
 import { Dictionary, PracticeCard, PracticeScreenProps, User } from '../../types';
 import { HeaderIconAction } from '../../components/header/actions';
+import { ACTIVE_DICTIONARY_TYPE } from '../../constants/dictionary';
 
 export const TESTS_LIMIT = 3;
 const WORDS_LIMIT = 10;
@@ -21,11 +22,12 @@ const TRANSLATIONS_LIMIT = 6;
 
 const PracticeScreen = (props: PracticeScreenProps) => {
     const { navigation } = props;
-    const { store: { dictionary, user, isOnline }, dispatch } = useAppContext();
+    const { store: { dictionary, user, isOnline, activeDictionary }, dispatch } = useAppContext();
     const { allowedTests = 0 } = user || {};
     const [words, setWords] = useState<PracticeCard[]>([]);
     const [unlearnedWordsCount, setUnlearnedWordsCount] = useState<number>(0);
     const isFocused = useIsFocused();
+    const isRemoteDictionary = activeDictionary.type === ACTIVE_DICTIONARY_TYPE.REMOTE;
 
     const navigateToProfile = (): void => {
         navigation.navigate('Profile');
@@ -106,15 +108,15 @@ const PracticeScreen = (props: PracticeScreenProps) => {
     };
 
     useEffect(() => {
-        if (!isFocused || !user?.token) {
+        if (isRemoteDictionary || !isFocused || !user?.token) {
             return;
         }
 
         getCards();
-    }, [isFocused, dictionary]);
+    }, [isFocused, dictionary, isRemoteDictionary, user?.token]);
 
     useEffect(() => {
-        if (!user || !user.token) {
+        if (isRemoteDictionary || !user || !user.token) {
             return;
         }
 
@@ -135,9 +137,13 @@ const PracticeScreen = (props: PracticeScreenProps) => {
         };
 
         updateUser(newUser);
-    }, []);
+    }, [isRemoteDictionary, user]);
 
     const renderContent = () => {
+        if (isRemoteDictionary) {
+            return <View />;
+        }
+
         if (!user?.token) {
             return (
                 <Fragment>

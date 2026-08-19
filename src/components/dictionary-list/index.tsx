@@ -1,7 +1,7 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
-import { COLORS } from '../../constants/theme';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { PublicDictionary } from '../../types';
+import DictionaryListItem from './dictionary-list-item';
 
 type DictionaryListProps = {
     data: PublicDictionary[];
@@ -18,16 +18,11 @@ const DictionaryList = (props: DictionaryListProps) => {
         const isSelected = selectedId === item.id;
 
         return (
-            <TouchableHighlight
-                underlayColor={COLORS.gray}
+            <DictionaryListItem
+                item={item}
+                isSelected={isSelected}
                 onPress={() => onSelect(item.id)}
-                style={styles.button}
-            >
-                <View style={[styles.item, isSelected ? styles.itemSelected : undefined]}>
-                    <Text style={styles.title}>{item.title}</Text>
-                    <Text style={styles.subtitle}>{`${item.wordsCount} words`}</Text>
-                </View>
-            </TouchableHighlight>
+            />
         );
     };
 
@@ -45,30 +40,6 @@ const DictionaryList = (props: DictionaryListProps) => {
 const styles = StyleSheet.create({
     wrap: {
         width: '100%',
-        backgroundColor: COLORS.white,
-    },
-    button: {
-        marginVertical: 1,
-    },
-    item: {
-        backgroundColor: COLORS.lightGray,
-        borderLeftWidth: 2,
-        borderRightWidth: 2,
-        borderColor: COLORS.white,
-        paddingHorizontal: 20,
-        paddingVertical: 15,
-    },
-    itemSelected: {
-        backgroundColor: COLORS.gray,
-    },
-    title: {
-        color: COLORS.lighterBlack,
-        fontSize: 16,
-    },
-    subtitle: {
-        fontSize: 12,
-        color: COLORS.darkGray,
-        marginTop: 4,
     },
 });
 

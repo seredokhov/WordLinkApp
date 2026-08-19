@@ -4,20 +4,24 @@ import Content from '../../components/content';
 import BorderedHeader from '../../components/header/bordered-header';
 import { HeaderIconAction } from '../../components/header/actions';
 import { COLORS } from '../../constants/theme';
+import { ACTIVE_DICTIONARY_TYPE, MY_DICTIONARY_ID } from '../../constants/dictionary';
 import { DictionariesScreenProps, PublicDictionary } from '../../types';
 import { useAppContext } from '../../store/context';
-import { SetError } from '../../store/actions';
+import { SetActiveDictionary, SetError } from '../../store/actions';
 import { errorHandler } from '../../utils';
 import Loader from '../../components/loader';
 import DictionaryService from '../../services/dictionary-service';
 import DictionaryList from '../../components/dictionary-list';
+import DictionaryListItem from '../../components/dictionary-list/dictionary-list-item';
+import Button from '../../components/button';
 
 const DictionariesScreen = (props: DictionariesScreenProps) => {
     const { navigation } = props;
-    const { store: { user }, dispatch } = useAppContext();
+    const { store: { user, dictionary, activeDictionary }, dispatch } = useAppContext();
     const [dictionaries, setDictionaries] = useState<PublicDictionary[]>([]);
-    const [selectedDictionaryId, setSelectedDictionaryId] = useState<string | null>(null);
+    const [selectedDictionaryId, setSelectedDictionaryId] = useState<string>(activeDictionary.id);
     const [isLoading, setIsLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
 
     const goHome = () => {
         navigation.navigate('Home');
@@ -41,8 +45,56 @@ const DictionariesScreen = (props: DictionariesScreenProps) => {
             .finally(() => setIsLoading(false));
     }, [dispatch, user?.token]);
 
+    useEffect(() => {
+        setSelectedDictionaryId(activeDictionary.id);
+    }, [activeDictionary.id]);
+
+    const myDictionaryItem: PublicDictionary = {
+        id: MY_DICTIONARY_ID,
+        title: 'My Dictionary',
+        wordsCount: Object.keys(dictionary).length,
+    };
+
+    const isSaveDisabled = selectedDictionaryId === activeDictionary.id;
+
+    const saveSelectedDictionary = () => {
+        if (selectedDictionaryId === myDictionaryItem.id) {
+            dispatch(SetActiveDictionary({
+                id: MY_DICTIONARY_ID,
+                type: ACTIVE_DICTIONARY_TYPE.LOCAL,
+                title: myDictionaryItem.title,
+                dictionary,
+            }));
+            navigation.navigate('Home');
+            return;
+        }
+
+        if (!user?.token) {
+            return;
+        }
+
+        const selectedDictionary = dictionaries.find((item) => item.id === selectedDictionaryId);
+        if (!selectedDictionary) {
+            return;
+        }
+
+        setIsSaving(true);
+        DictionaryService.getDictionaryWords(selectedDictionaryId, user.token)
+            .then((remoteDictionary) => {
+                dispatch(SetActiveDictionary({
+                    id: selectedDictionaryId,
+                    type: ACTIVE_DICTIONARY_TYPE.REMOTE,
+                    title: selectedDictionary.title,
+                    dictionary: remoteDictionary,
+                }));
+                navigation.navigate('Home');
+            })
+            .catch((err) => dispatch(SetError(errorHandler(err))))
+            .finally(() => setIsSaving(false));
+    };
+
     const renderContent = () => {
-        if (isLoading) {
+        if (isLoading || isSaving) {
             return <Loader iconSize={50} />;
         }
 
@@ -54,20 +106,27 @@ const DictionariesScreen = (props: DictionariesScreenProps) => {
             );
         }
 
-        if (!dictionaries.length) {
-            return (
-                <View style={styles.messageWrap}>
-                    <Text style={styles.message}>No dictionaries yet.</Text>
-                </View>
-            );
-        }
-
         return (
-            <DictionaryList
-                data={dictionaries}
-                selectedId={selectedDictionaryId}
-                onSelect={setSelectedDictionaryId}
-            />
+            <View style={styles.listWrap}>
+                <DictionaryListItem
+                    item={myDictionaryItem}
+                    isSelected={selectedDictionaryId === myDictionaryItem.id}
+                    onPress={() => setSelectedDictionaryId(myDictionaryItem.id)}
+                />
+                <DictionaryList
+                    data={dictionaries}
+                    selectedId={selectedDictionaryId}
+                    onSelect={setSelectedDictionaryId}
+                />
+                <View style={styles.buttonWrap}>
+                    <Button
+                        text="Save"
+                        backgroundColor={COLORS.lightRed}
+                        onPress={saveSelectedDictionary}
+                        disabled={isSaveDisabled}
+                    />
+                </View>
+            </View>
         );
     };
 
@@ -102,6 +161,14 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
+    },
+    listWrap: {
+        flex: 1,
+        backgroundColor: COLORS.white,
+    },
+    buttonWrap: {
+        paddingHorizontal: 20,
+        paddingVertical: 20,
     },
     messageWrap: {
         flex: 1,

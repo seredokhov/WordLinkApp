@@ -9,12 +9,14 @@ const Card = props => {
         backgroundColor,
         textColor,
         children,
-        onPress
+        onPress,
+        contentStyle
     } = { ...defaultProps, ...props };
 
     const cardStyles = [
         styles.card,
-        { backgroundColor }
+        { backgroundColor },
+        contentStyle
     ];
 
     const textStyles = [
@@ -49,6 +51,7 @@ Card.propTypes = {
     backgroundColor: PropTypes.string,
     textColor: PropTypes.string,
     onPress: PropTypes.func,
+    contentStyle: PropTypes.object,
 };
 
 const styles = StyleSheet.create({
@@ -60,16 +63,6 @@ const styles = StyleSheet.create({
         height: '100%',
         borderRadius: 30,
         padding: 20,
-        borderWidth: 1,
-        borderColor: COLORS.white,
-        shadowColor: COLORS.black,
-        shadowOpacity: 1,
-        shadowOffset: {
-            width: 0,
-            height: 0
-        },
-        shadowRadius: 10,
-        elevation: 20,
     },
     label: {
         textAlign: 'center',

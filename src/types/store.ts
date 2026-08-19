@@ -1,4 +1,5 @@
-import { Dictionary, MergeWordsResponse, Word, WordUpdateResult } from './word';
+import { MergeWordsResponse, Word, WordUpdateResult } from './word';
+import type { ActiveDictionary, Dictionary } from './dictionary';
 import { User } from './user';
 
 export type Action =
@@ -13,6 +14,7 @@ export type Action =
     | { type: 'FILTER'; payload: string }
     | { type: 'SET_ERROR'; payload: string | null }
     | { type: 'UPDATE_USER'; payload: User }
+    | { type: 'SET_ACTIVE_DICTIONARY'; payload: ActiveDictionary }
     | { type: 'TOGGLE_INTERNET_CONNECTION'; payload: boolean };
 
 export type ActionType = Action['type'];

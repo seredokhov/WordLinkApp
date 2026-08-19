@@ -1,19 +1,16 @@
-export type Word = {
+export type BaseWord = {
     id?: string;
     word: string;
     translate: string;
+};
+
+export type RemoteWord = BaseWord;
+
+export type Word = BaseWord & {
     progress: number;
     lastUpdate: string | number;
     isLearned: boolean;
     isFavorite: boolean;
-};
-
-export type Dictionary = Record<string, Word>;
-
-export type PublicDictionary = {
-    id: string;
-    title: string;
-    wordsCount: number;
 };
 
 export type MergeWordsRequest = {
@@ -31,10 +28,4 @@ export type WordUpdateResult = {
 export type MergeWordsResponse = {
     created: Word[];
     updated: WordUpdateResult[];
-};
-
-export type WordsToSynchronize = {
-    toCreate: Dictionary | null;
-    toUpdate: Dictionary | null;
-    toDownload: Dictionary | null;
 };

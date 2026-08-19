@@ -1,5 +1,6 @@
 export type * from './user';
 export type * from './word';
+export type * from './dictionary';
 export type * from './app';
 export type * from './store';
 export type * from './navigation';

@@ -15,4 +15,5 @@ export const MergeWords = createAction('MERGE_WORDS');
 export const Filter = createAction('FILTER');
 export const SetError = createAction('SET_ERROR');
 export const UpdateUser = createAction('UPDATE_USER');
+export const SetActiveDictionary = createAction('SET_ACTIVE_DICTIONARY');
 export const ToggleInternetConnection = createAction('TOGGLE_INTERNET_CONNECTION');

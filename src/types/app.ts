@@ -1,11 +1,13 @@
 import { User } from './user';
-import { Dictionary, Word } from './word';
+import { Word } from './word';
+import type { ActiveDictionary, Dictionary } from './dictionary';
 import { Dispatch } from 'react';
 import { Action } from './store';
 
 export type AppState = {
     user: User | null;
     dictionary: Dictionary;
+    activeDictionary: ActiveDictionary;
     isLoadedAppData: boolean;
     filterMask: string;
     selectedWord: Word | Record<string, never>;

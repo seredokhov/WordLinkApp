@@ -6,11 +6,13 @@ import { COLORS } from '../../constants/theme';
 import VoiceService from '../../services/voice-service';
 import Card from './';
 import IconButton from '../button/icon-button';
+import CardBackDictionaryBadge from './card-back-dictionary-badge';
 
 const FlipCard = props => {
     const {
         word,
-        translate
+        translate,
+        dictionaryTitle
     } = props;
 
     const cardRed = useRef(null);
@@ -29,20 +31,27 @@ const FlipCard = props => {
             style={styles.cardContainer}
             ref={cardRed}
         >
-            <Card title={word}>
-                <View style={styles.cardControls}>
-                    <IconButton
-                        text="Listen"
-                        icon="volume-high-outline"
-                        onPress={listen}
-                    />
-                    <IconButton
-                        text="Flip"
-                        icon="arrow-undo-outline"
-                        onPress={flipCard}
-                    />
-                </View>
-            </Card>
+            <View style={styles.cardWrapper}>
+                <Card title={word}>
+                    <View style={styles.cardControls}>
+                        <IconButton
+                            text="Listen"
+                            icon="volume-high-outline"
+                            onPress={listen}
+                        />
+                        <IconButton
+                            text="Flip"
+                            icon="arrow-undo-outline"
+                            onPress={flipCard}
+                        />
+                    </View>
+                </Card>
+                {
+                    dictionaryTitle && (
+                        <CardBackDictionaryBadge title={dictionaryTitle} />
+                    )
+                }
+            </View>
             <Card
                 title={translate}
                 backgroundColor={COLORS.lightGray}
@@ -63,7 +72,8 @@ const FlipCard = props => {
 
 FlipCard.propTypes = {
     word: PropTypes.string.isRequired,
-    translate: PropTypes.string.isRequired
+    translate: PropTypes.string.isRequired,
+    dictionaryTitle: PropTypes.string
 };
 
 const styles = StyleSheet.create({
@@ -77,7 +87,24 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         width: 150
-    }
+    },
+    cardWrapper: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        borderRadius: 30,
+        overflow: 'hidden',
+        borderWidth: 1,
+        borderColor: COLORS.white,
+        shadowColor: COLORS.black,
+        shadowOpacity: 1,
+        shadowOffset: {
+            width: 0,
+            height: 0
+        },
+        shadowRadius: 10,
+        elevation: 20
+    },
 });
 
 export default FlipCard;

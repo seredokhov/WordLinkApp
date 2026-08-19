@@ -1,13 +1,13 @@
 import React from 'react';
 import { Animated, View, StyleSheet } from 'react-native';
 import { useAppContext } from '../../store/context';
-import DictionaryNavigator from '../../navigators/DictionaryNavigator';
 import Content from '../../components/content';
-import WordContainer from '../../components/container/word-container';
-import SearchContainer from '../../components/container/search-container';
+import HomeTopContainer from '../../components/container/home-top-container';
+import HomeContentContainer from '../../components/container/home-content-container';
 import BorderedHeader from '../../components/header/bordered-header';
 import { HeaderIconAction } from '../../components/header/actions';
 import { HomeScreenProps } from '../../types';
+import { ACTIVE_DICTIONARY_TYPE } from '../../constants/dictionary';
 
 const HomeScreen = (props: HomeScreenProps) => {
     const { navigation } = props;
@@ -16,14 +16,15 @@ const HomeScreen = (props: HomeScreenProps) => {
         navigation.navigate('Dictionaries');
     }
 
-    const { store: { selectedWord } } = useAppContext();
+    const { store: { selectedWord, activeDictionary } } = useAppContext();
+    const isRemoteDictionary = activeDictionary.type === ACTIVE_DICTIONARY_TYPE.REMOTE;
+    const words = Object.values(activeDictionary.dictionary);
 
-    const topHalfStyles = [
-        {
-            height: selectedWord.word ? 185 : 110
-        }
-    ];
-    const rightContent = !selectedWord.word && (
+    const topHalfStyles = isRemoteDictionary
+        ? undefined
+        : [{ height: selectedWord.word ? 185 : 110 }];
+
+    const rightContent = (isRemoteDictionary || !selectedWord.word) && (
         <HeaderIconAction
             icon="book"
             onPress={navigateToDictionaries}
@@ -35,15 +36,17 @@ const HomeScreen = (props: HomeScreenProps) => {
         <View style={styles.screen}>
             <BorderedHeader rightContent={rightContent}>
                 <Animated.View style={topHalfStyles}>
-                    {
-                        selectedWord.word ?
-                            <WordContainer /> :
-                            <SearchContainer />
-                    }
+                    <HomeTopContainer
+                        isRemoteDictionary={isRemoteDictionary}
+                        selectedWord={selectedWord}
+                    />
                 </Animated.View>
             </BorderedHeader>
             <Content>
-                <DictionaryNavigator />
+                <HomeContentContainer
+                    isRemoteDictionary={isRemoteDictionary}
+                    words={words}
+                />
             </Content>
         </View>
     );

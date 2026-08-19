@@ -10,12 +10,15 @@ import { HeaderIconAction } from '../../components/header/actions';
 import { useIsFocused } from '@react-navigation/native';
 import Button from '../../components/button';
 import Loader from '../../components/loader';
+import ActiveDictionaryBadge from '../../components/active-dictionary-badge';
 import { CardScreenProps } from '../../types';
+import { ACTIVE_DICTIONARY_TYPE } from '../../constants/dictionary';
 
 const CardsScreen = (props: CardScreenProps) => {
     const { navigation } = props;
-    const { store: { dictionary } } = useAppContext();
-    const cardsData = Object.values(dictionary);
+    const { store: { activeDictionary } } = useAppContext();
+    const isRemoteDictionary = activeDictionary.type === ACTIVE_DICTIONARY_TYPE.REMOTE;
+    const cardsData = Object.values(activeDictionary.dictionary);
     const [cards, setCards] = useState(cardsData);
     const [isLoadedData, setLoadedData] = useState(false);
     const isFocused = useIsFocused();
@@ -45,7 +48,7 @@ const CardsScreen = (props: CardScreenProps) => {
         }
 
         shuffleCards();
-    }, [isFocused]);
+    }, [isFocused, activeDictionary]);
 
     const renderContent = () => {
         if (cardsData.length > 0) {
@@ -53,6 +56,7 @@ const CardsScreen = (props: CardScreenProps) => {
                 <CardsBlock
                     cardsData={cards}
                     onRefresh={shuffleCards}
+                    dictionaryTitle={isRemoteDictionary ? activeDictionary.title : undefined}
                 />
             );
         }
@@ -80,7 +84,7 @@ const CardsScreen = (props: CardScreenProps) => {
                 <Text style={styles.title}>Cards</Text>
             </BorderedHeader>
             <Content>
-                <View style={styles.contentWrap}>
+                <View style={[styles.contentWrap]}>
                     {
                         !isLoadedData ? (
                             <Loader iconSize={50} />

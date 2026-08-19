@@ -9,7 +9,8 @@ import Button from '../button';
 const CardsBlock = props => {
     const {
         cardsData,
-        onRefresh
+        onRefresh,
+        dictionaryTitle
     } = { ...defaultProps, ...props };
 
     const [noMore, setNoMore] = useState(cardsData.length === 0);
@@ -23,7 +24,10 @@ const CardsBlock = props => {
 
     const renderCards = card => {
         return (
-            <FlipCard {...card} />
+            <FlipCard
+                {...card}
+                dictionaryTitle={dictionaryTitle}
+            />
         );
     };
 
@@ -72,12 +76,13 @@ const CardsBlock = props => {
 };
 
 const defaultProps = {
-    isVisible: true
+    dictionaryTitle: ''
 };
 
 CardsBlock.propTypes = {
     cardsData: PropTypes.array.isRequired,
-    onRefresh: PropTypes.func.isRequired
+    onRefresh: PropTypes.func.isRequired,
+    dictionaryTitle: PropTypes.string
 };
 
 const styles = StyleSheet.create({
