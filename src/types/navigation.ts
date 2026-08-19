@@ -26,6 +26,7 @@ export type MainTabParamList = {
     Cards: undefined;
     Practice: undefined;
     Profile: undefined;
+    Dictionaries: undefined;
 };
 
 export type RootStackParamList = {

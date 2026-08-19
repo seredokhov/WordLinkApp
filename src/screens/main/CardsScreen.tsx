@@ -6,6 +6,7 @@ import { randomize } from '../../utils';
 import CardsBlock from '../../components/card/cards-block';
 import Content from '../../components/content';
 import BorderedHeader from '../../components/header/bordered-header';
+import { HeaderIconAction } from '../../components/header/actions';
 import { useIsFocused } from '@react-navigation/native';
 import Button from '../../components/button';
 import Loader from '../../components/loader';
@@ -73,9 +74,8 @@ const CardsScreen = (props: CardScreenProps) => {
     return (
         <View style={styles.page}>
             <BorderedHeader
-                rightBtnIcon="person-circle"
-                onLeftBtnPress={back}
-                onRightBtnPress={navigateToProfile}
+                leftContent={<HeaderIconAction icon="arrow-back-outline" onPress={back} />}
+                rightContent={<HeaderIconAction icon="person-circle" onPress={navigateToProfile} bordered />}
             >
                 <Text style={styles.title}>Cards</Text>
             </BorderedHeader>

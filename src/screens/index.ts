@@ -13,6 +13,7 @@ import HomeScreen from './main/HomeScreen';
 import CardsScreen from './main/CardsScreen';
 import PracticeScreen from './main/PracticeScreen';
 import ProfileScreen from './main/ProfileScreen';
+import DictionariesScreen from './main/DictionariesScreen';
 
 export {
     BookmarksScreen,
@@ -29,5 +30,6 @@ export {
     CardsScreen,
     PracticeScreen,
     ProfileScreen,
+    DictionariesScreen,
     CheckAuthScreen
 };

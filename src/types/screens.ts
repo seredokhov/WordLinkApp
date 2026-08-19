@@ -9,6 +9,7 @@ export type HomeScreenProps = MainTabScreenProps<'Home'>;
 export type CardScreenProps = MainTabScreenProps<'Cards'>;
 export type PracticeScreenProps = MainTabScreenProps<'Practice'>;
 export type ProfileScreenProps = MainTabScreenProps<'Profile'>;
+export type DictionariesScreenProps = MainTabScreenProps<'Dictionaries'>;
 
 export type DictionaryScreenProps = DictionaryTabScreenProps<'Dictionary'>
 export type BookmarksScreenProps = DictionaryTabScreenProps<'Bookmarks'>

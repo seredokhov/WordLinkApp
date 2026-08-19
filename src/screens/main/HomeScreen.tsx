@@ -6,14 +6,15 @@ import Content from '../../components/content';
 import WordContainer from '../../components/container/word-container';
 import SearchContainer from '../../components/container/search-container';
 import BorderedHeader from '../../components/header/bordered-header';
+import { HeaderIconAction } from '../../components/header/actions';
 import { HomeScreenProps } from '../../types';
 
 const HomeScreen = (props: HomeScreenProps) => {
     const { navigation } = props;
 
-    const navigateToProfile = () => {
-        navigation.navigate('Profile');
-    };
+    const navigateToDictionaries = () => {
+        navigation.navigate('Dictionaries');
+    }
 
     const { store: { selectedWord } } = useAppContext();
 
@@ -22,10 +23,17 @@ const HomeScreen = (props: HomeScreenProps) => {
             height: selectedWord.word ? 185 : 110
         }
     ];
+    const rightContent = !selectedWord.word && (
+        <HeaderIconAction
+            icon="book"
+            onPress={navigateToDictionaries}
+            bordered
+        />
+    );
 
     return (
         <View style={styles.screen}>
-            <BorderedHeader rightBtnIcon="person-circle" onRightBtnPress={navigateToProfile}>
+            <BorderedHeader rightContent={rightContent}>
                 <Animated.View style={topHalfStyles}>
                     {
                         selectedWord.word ?
@@ -45,7 +53,7 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         alignItems: 'stretch',
-    }
+    },
 });
 
 export default HomeScreen;

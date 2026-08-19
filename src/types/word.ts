@@ -10,24 +10,29 @@ export type Word = {
 
 export type Dictionary = Record<string, Word>;
 
-//requests
+export type PublicDictionary = {
+    id: string;
+    title: string;
+    wordsCount: number;
+};
+
 export type MergeWordsRequest = {
     wordsToCreate: Word[];
     wordsToUpdate: Word[];
 };
+
 export type CreateWordRequest = Omit<Word, 'id'> & { id?: string };
 
-// responses
 export type WordUpdateResult = {
     oldWordName: string;
     newWordData: Word;
 };
+
 export type MergeWordsResponse = {
     created: Word[];
     updated: WordUpdateResult[];
 };
 
-// sync
 export type WordsToSynchronize = {
     toCreate: Dictionary | null;
     toUpdate: Dictionary | null;

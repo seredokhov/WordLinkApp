@@ -1,53 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableHighlight } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { View, StyleSheet } from 'react-native';
 import { COLORS } from '../../constants/theme';
 
 const BorderedHeader = props => {
     const {
-        leftBtnIcon,
-        rightBtnIcon,
-        children,
-        onLeftBtnPress,
-        onRightBtnPress
+        leftContent,
+        rightContent,
+        children
     } = { ...defaultProps, ...props };
-
-    const leftIcon = leftBtnIcon || 'arrow-back-outline';
-    const rightIcon = rightBtnIcon || 'ios-refresh';
 
     return (
         <View style={styles.wrap}>
             <View style={styles.header}>
                 {
-                    onLeftBtnPress && (
-                        <TouchableHighlight
-                            style={[styles.btn, styles.leftBtn]}
-                            underlayColor={COLORS.lightRed}
-                            onPress={onLeftBtnPress}
-                        >
-                            <Icon
-                                name={leftIcon}
-                                color={COLORS.white}
-                                size={30}
-                            />
-                        </TouchableHighlight>
+                    leftContent && (
+                        <View style={styles.leftSlot}>
+                            {leftContent}
+                        </View>
                     )
                 }
                 { children }
                 {
-                    onRightBtnPress && (
-                        <TouchableHighlight
-                            style={[styles.btn, styles.rightBtn]}
-                            onPress={onRightBtnPress}
-                            underlayColor={COLORS.lightRed}
-                        >
-                            <Icon
-                                name={rightIcon}
-                                color={COLORS.white}
-                                size={30}
-                            />
-                        </TouchableHighlight>
+                    rightContent && (
+                        <View style={styles.rightSlot}>
+                            {rightContent}
+                        </View>
                     )
                 }
             </View>
@@ -56,18 +34,14 @@ const BorderedHeader = props => {
 };
 
 const defaultProps = {
-    leftBtnIcon: '',
-    rightBtnIcon: '',
-    onLeftBtnPress: undefined,
-    onRightBtnPress: undefined,
+    leftContent: undefined,
+    rightContent: undefined,
 };
 
 BorderedHeader.propTypes = {
     children: PropTypes.node.isRequired,
-    leftBtnIcon: PropTypes.string,
-    rightBtnIcon: PropTypes.string,
-    onLeftBtnPress: PropTypes.func,
-    onRightBtnPress: PropTypes.func,
+    leftContent: PropTypes.node,
+    rightContent: PropTypes.node,
 };
 
 const styles = StyleSheet.create({
@@ -85,22 +59,24 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 30,
         minHeight: 80,
     },
-    btn: {
+    leftSlot: {
         display: 'flex',
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
         position: 'absolute',
-        width: 40,
-        height: 40,
-        top: 15,
+        top: 17,
+        left: 20,
         zIndex: 10,
     },
-    leftBtn: {
-        left: 20,
-    },
-    rightBtn: {
+    rightSlot: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        position: 'absolute',
+        top: 17,
         right: 20,
-    }
+        zIndex: 10,
+    },
 });
 
 export default BorderedHeader;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator, BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { COLORS } from '../constants/theme';
-import { HomeScreen, CardsScreen, ProfileScreen, PracticeScreen } from '../screens';
+import { HomeScreen, CardsScreen, ProfileScreen, PracticeScreen, DictionariesScreen } from '../screens';
 import Tab from '../components/tab';
 import { MainTabParamList, MainTabScreenOptionsArgs } from '../types';
 
@@ -15,6 +15,7 @@ const screenOptions = (options: MainTabScreenOptionsArgs): BottomTabNavigationOp
         Cards: 'layers',
         Practice: 'school',
         Profile: 'person-circle',
+        Dictionaries: 'book',
     };
 
     const labelsMap: Record<keyof MainTabParamList, string> = {
@@ -22,9 +23,10 @@ const screenOptions = (options: MainTabScreenOptionsArgs): BottomTabNavigationOp
         Cards: 'Cards',
         Practice: 'Practice',
         Profile: 'Profile',
+        Dictionaries: 'Dictionaries',
     };
 
-    return {
+    const baseOptions: BottomTabNavigationOptions = {
         headerShown: false,
         tabBarActiveTintColor: COLORS.lightRed,
         tabBarInactiveTintColor: COLORS.darkGray,
@@ -44,10 +46,20 @@ const screenOptions = (options: MainTabScreenOptionsArgs): BottomTabNavigationOp
                     size={25}
                     fontSize={10}
                     color={color}
+                    type="column"
                 />
             );
         },
     };
+
+    if (route.name === 'Dictionaries') {
+        return {
+            ...baseOptions,
+            tabBarButton: () => null,
+        };
+    }
+
+    return baseOptions;
 };
 
 const MainNavigator = () => {
@@ -57,6 +69,7 @@ const MainNavigator = () => {
             <TabNavigator.Screen name="Cards" component={CardsScreen} />
             <TabNavigator.Screen name="Practice" component={PracticeScreen} />
             <TabNavigator.Screen name="Profile" component={ProfileScreen} />
+            <TabNavigator.Screen name="Dictionaries" component={DictionariesScreen} />
         </TabNavigator.Navigator>
     );
 };

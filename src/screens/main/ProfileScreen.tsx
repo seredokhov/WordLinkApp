@@ -10,6 +10,7 @@ import DatabaseContainer from '../../components/container/database-container';
 import Button from '../../components/button';
 import Title from '../../components/title';
 import { ProfileScreenProps } from '../../types';
+import { HeaderIconAction } from '../../components/header/actions';
 
 const ProfileScreen = (props: ProfileScreenProps) => {
     const { navigation } = props;
@@ -54,9 +55,8 @@ const ProfileScreen = (props: ProfileScreenProps) => {
     return (
         <View style={styles.page}>
             <BorderedHeader
-                rightBtnIcon="log-out-outline"
-                onLeftBtnPress={back}
-                onRightBtnPress={openConformModal}
+                leftContent={<HeaderIconAction icon="arrow-back-outline" onPress={back} />}
+                rightContent={<HeaderIconAction icon="log-out-outline" onPress={openConformModal} bordered />}
             >
                 <Text style={styles.title}>Profile</Text>
             </BorderedHeader>

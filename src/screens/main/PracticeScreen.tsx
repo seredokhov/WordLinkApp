@@ -13,6 +13,7 @@ import { CommonActions, useIsFocused } from '@react-navigation/native';
 import Button from '../../components/button';
 import UserService from '../../services/user-service';
 import { Dictionary, PracticeCard, PracticeScreenProps, User } from '../../types';
+import { HeaderIconAction } from '../../components/header/actions';
 
 export const TESTS_LIMIT = 3;
 const WORDS_LIMIT = 10;
@@ -178,9 +179,8 @@ const PracticeScreen = (props: PracticeScreenProps) => {
     return (
         <View style={styles.page}>
             <BorderedHeader
-                onLeftBtnPress={back}
-                rightBtnIcon="person-circle"
-                onRightBtnPress={navigateToProfile}
+                leftContent={<HeaderIconAction icon="arrow-back-outline" onPress={back} />}
+                rightContent={<HeaderIconAction icon="person-circle" onPress={navigateToProfile} bordered />}
             >
                 <Text style={styles.title}>Practice</Text>
             </BorderedHeader>
