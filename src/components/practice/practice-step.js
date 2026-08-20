@@ -13,6 +13,11 @@ const PracticeStep = props => {
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const currentEntity = words[currentIndex];
+
+    if (!currentEntity) {
+        return null;
+    }
+
     const { entity, translation, suggestions } = currentEntity;
 
     const handleChangeAnswer = suggestion => {

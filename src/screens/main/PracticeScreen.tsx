@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { COLORS } from '../../constants/theme';
 import { useAppContext } from '../../store/context';
@@ -6,19 +6,18 @@ import { getRandomEntities, errorHandler } from '../../utils';
 import Content from '../../components/content';
 import BorderedHeader from '../../components/header/bordered-header';
 import PracticeContainer from '../../components/practice/practice-container';
+import RemotePracticeContainer from '../../components/practice/remote-practice-container';
 import WordService from '../../services/word-service';
 import AsyncStorageService from '../../services/async-storage-service';
-import { Init, SetError, UpdateUser } from '../../store/actions';
-import { CommonActions, useIsFocused } from '@react-navigation/native';
-import Button from '../../components/button';
+import { Init, SetActiveDictionary, SetError, UpdateUser } from '../../store/actions';
+import { useIsFocused } from '@react-navigation/native';
 import UserService from '../../services/user-service';
+import DictionaryService from '../../services/dictionary-service';
 import { Dictionary, PracticeCard, PracticeScreenProps, User } from '../../types';
 import { HeaderIconAction } from '../../components/header/actions';
 import { ACTIVE_DICTIONARY_TYPE } from '../../constants/dictionary';
-
-export const TESTS_LIMIT = 3;
-const WORDS_LIMIT = 10;
-const TRANSLATIONS_LIMIT = 6;
+import { TESTS_LIMIT, TRANSLATIONS_LIMIT, WORDS_LIMIT } from '../../constants/practice';
+import AuthRequired from '../../components/auth-required';
 
 const PracticeScreen = (props: PracticeScreenProps) => {
     const { navigation } = props;
@@ -95,16 +94,40 @@ const PracticeScreen = (props: PracticeScreenProps) => {
             .catch(err => dispatch(SetError(errorHandler(err))));
     };
 
-    const back = () => {
-        navigation.navigate('Home');
+    const saveRemoteResults = (correctCount: number, totalWords: number) => {
+        if (
+            !user?.token ||
+            !user.id ||
+            activeDictionary.type !== ACTIVE_DICTIONARY_TYPE.REMOTE
+        ) {
+            return;
+        }
+
+        DictionaryService.saveDictionaryProgress(
+            user.id,
+            activeDictionary.id,
+            {
+                correctCount,
+                totalWords
+            },
+            user.token
+        )
+            .then((progressResponse) => {
+                dispatch(SetActiveDictionary({
+                    ...activeDictionary,
+                    progress: {
+                        bestCorrectAnswers: progressResponse.bestCorrectAnswers,
+                        bestProgressPercent: progressResponse.bestProgressPercent,
+                        lastCorrectCount: progressResponse.lastCorrectCount,
+                        lastTestDate: progressResponse.lastTestDate
+                    }
+                }));
+            })
+            .catch(err => dispatch(SetError(errorHandler(err))));
     };
 
-    const navigateToStartPage = () => {
-        navigation.dispatch(
-            CommonActions.navigate({
-                name: 'GetStarted'
-            })
-        );
+    const back = () => {
+        navigation.navigate('Home');
     };
 
     useEffect(() => {
@@ -140,22 +163,29 @@ const PracticeScreen = (props: PracticeScreenProps) => {
     }, [isRemoteDictionary, user]);
 
     const renderContent = () => {
-        if (isRemoteDictionary) {
-            return <View />;
+        if (!user?.token) {
+            return <AuthRequired />;
         }
 
-        if (!user?.token) {
-            return (
-                <Fragment>
-                    <Text style={styles.message}>Create account or login for unblock this functionality</Text>
-                    <View style={styles.buttonsContainer}>
-                        <Button
-                            text="Create Account"
-                            backgroundColor={COLORS.lightRed}
-                            onPress={navigateToStartPage}
-                        />
+        if (isRemoteDictionary) {
+            if (Object.keys(activeDictionary.dictionary).length === 0) {
+                return (
+                    <View>
+                        <Text style={styles.messageTitle}>Dictionary is empty.</Text>
+                        <Text style={styles.message}>
+                            This dictionary has no words to practice yet.
+                        </Text>
                     </View>
-                </Fragment>
+                );
+            }
+
+            return (
+                <RemotePracticeContainer
+                    dictionary={activeDictionary.dictionary}
+                    title={activeDictionary.title}
+                    theme={activeDictionary.theme || activeDictionary.title}
+                    onFinish={saveRemoteResults}
+                />
             );
         }
 
@@ -226,9 +256,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
         marginBottom: 10
-    },
-    buttonsContainer: {
-        width: 220
     }
 });
 

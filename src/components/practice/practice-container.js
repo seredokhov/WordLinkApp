@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import PracticeStep from './practice-step';
 import PracticeResults from './practice-results';
-import { COLORS } from '../../constants/theme';
+import PracticeIntro from './practice-intro';
 import { useIsFocused } from '@react-navigation/native';
-import Button from '../button';
-import Title from '../title';
-import { TESTS_LIMIT } from '../../screens/main/PracticeScreen';
+import { TESTS_LIMIT } from '../../constants/practice';
 
 const PracticeContainer = props => {
     const {
@@ -88,28 +86,15 @@ const PracticeContainer = props => {
 
     if (!isActiveTest) {
         return (
-            <View style={styles.wrap}>
-                <Title title="Practice" iconName="school" />
-                <View style={styles.textBlock}>
-                    <Text style={styles.description}>You can pass 3 tests per day to mark your words as learned.</Text>
-                    <View style={styles.row}>
-                        <Text style={styles.text}>Passed tests:</Text>
-                        <Text style={styles.text}>{TESTS_LIMIT - allowedTestsCount}/{TESTS_LIMIT}</Text>
-                    </View>
-                    <View style={styles.row}>
-                        <Text style={styles.text}>Unlearned words:</Text>
-                        <Text style={styles.text}>{unlearnedWordsCount}</Text>
-                    </View>
-                </View>
-                <View style={styles.buttonsContainer}>
-                    <Button
-                        text="Start Test"
-                        backgroundColor={COLORS.lightRed}
-                        onPress={handlerStartTest}
-                        disabled={allowedTestsCount === 0}
-                    />
-                </View>
-            </View>
+            <PracticeIntro
+                description="You can pass 3 tests per day to mark your words as learned."
+                stats={[
+                    { label: 'Passed tests:', value: `${TESTS_LIMIT - allowedTestsCount}/${TESTS_LIMIT}` },
+                    { label: 'Unlearned words:', value: unlearnedWordsCount },
+                ]}
+                startDisabled={allowedTestsCount === 0}
+                onStart={handlerStartTest}
+            />
         );
     }
 
@@ -142,26 +127,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
-    },
-    buttonsContainer: {
-        width: 220
-    },
-    textBlock: {
-        marginBottom: 20
-    },
-    row: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 5
-    },
-    text: {
-        fontSize: 19
-    },
-    description: {
-        fontSize: 19,
-        marginBottom: 15
     },
 });
 

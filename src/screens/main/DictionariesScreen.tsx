@@ -14,6 +14,8 @@ import DictionaryService from '../../services/dictionary-service';
 import DictionaryList from '../../components/dictionary-list';
 import DictionaryListItem from '../../components/dictionary-list/dictionary-list-item';
 import Button from '../../components/button';
+import { useIsFocused } from '@react-navigation/native';
+import AuthRequired from '../../components/auth-required';
 
 const DictionariesScreen = (props: DictionariesScreenProps) => {
     const { navigation } = props;
@@ -22,6 +24,7 @@ const DictionariesScreen = (props: DictionariesScreenProps) => {
     const [selectedDictionaryId, setSelectedDictionaryId] = useState<string>(activeDictionary.id);
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
+    const isFocused = useIsFocused();
 
     const goHome = () => {
         navigation.navigate('Home');
@@ -32,8 +35,10 @@ const DictionariesScreen = (props: DictionariesScreenProps) => {
     };
 
     useEffect(() => {
-        if (!user?.token) {
-            setIsLoading(false);
+        if (!isFocused || !user?.token) {
+            if (!user?.token) {
+                setIsLoading(false);
+            }
             return;
         }
 
@@ -43,7 +48,7 @@ const DictionariesScreen = (props: DictionariesScreenProps) => {
             })
             .catch((err) => dispatch(SetError(errorHandler(err))))
             .finally(() => setIsLoading(false));
-    }, [dispatch, user?.token]);
+    }, [dispatch, user?.token, isFocused]);
 
     useEffect(() => {
         setSelectedDictionaryId(activeDictionary.id);
@@ -54,6 +59,21 @@ const DictionariesScreen = (props: DictionariesScreenProps) => {
         title: 'My Dictionary',
         wordsCount: Object.keys(dictionary).length,
     };
+
+    const dictionariesWithProgress = dictionaries.map((item) => {
+        if (
+            activeDictionary.type !== ACTIVE_DICTIONARY_TYPE.REMOTE ||
+            item.id !== activeDictionary.id ||
+            !activeDictionary.progress
+        ) {
+            return item;
+        }
+
+        return {
+            ...item,
+            progress: activeDictionary.progress,
+        };
+    });
 
     const isSaveDisabled = selectedDictionaryId === activeDictionary.id;
 
@@ -85,7 +105,9 @@ const DictionariesScreen = (props: DictionariesScreenProps) => {
                     id: selectedDictionaryId,
                     type: ACTIVE_DICTIONARY_TYPE.REMOTE,
                     title: selectedDictionary.title,
+                    theme: selectedDictionary.theme || selectedDictionary.title,
                     dictionary: remoteDictionary,
+                    progress: selectedDictionary.progress,
                 }));
                 navigation.navigate('Home');
             })
@@ -94,16 +116,12 @@ const DictionariesScreen = (props: DictionariesScreenProps) => {
     };
 
     const renderContent = () => {
-        if (isLoading || isSaving) {
-            return <Loader iconSize={50} />;
+        if (!user?.token) {
+            return <AuthRequired />;
         }
 
-        if (!user?.token) {
-            return (
-                <View style={styles.messageWrap}>
-                    <Text style={styles.message}>Login is required to load dictionaries.</Text>
-                </View>
-            );
+        if (isLoading || isSaving) {
+            return <Loader iconSize={50} />;
         }
 
         return (
@@ -114,7 +132,7 @@ const DictionariesScreen = (props: DictionariesScreenProps) => {
                     onPress={() => setSelectedDictionaryId(myDictionaryItem.id)}
                 />
                 <DictionaryList
-                    data={dictionaries}
+                    data={dictionariesWithProgress}
                     selectedId={selectedDictionaryId}
                     onSelect={setSelectedDictionaryId}
                 />
@@ -169,16 +187,6 @@ const styles = StyleSheet.create({
     buttonWrap: {
         paddingHorizontal: 20,
         paddingVertical: 20,
-    },
-    messageWrap: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 30,
-    },
-    message: {
-        fontSize: 18,
-        textAlign: 'center',
     }
 });
 

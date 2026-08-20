@@ -1,7 +1,7 @@
 import { Animated } from 'react-native';
 import type { StackCardStyleInterpolator } from '@react-navigation/stack';
 import type { AxiosError } from 'axios';
-import type { Dictionary, PracticeCard, Word, WordsToSynchronize } from '../types';
+import type { BaseWord, PracticeCard, Word, WordsToSynchronize } from '../types';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
 const noop = () => {};
@@ -15,7 +15,7 @@ const randomize = <T>(array: T[]): T[] => {
 };
 
 const getRandomTranslations = (
-    data: Dictionary,
+    data: Record<string, BaseWord>,
     excludeTranslation: string,
     limit: number,
 ): string[] => {
@@ -35,13 +35,13 @@ const getRandomTranslations = (
     return randomTranslations;
 };
 
-const getRandomEntities = (
-    data: Dictionary,
+const getRandomEntities = <T extends BaseWord>(
+    data: Record<string, T>,
     entitiesLimit: number,
     translationsLimit: number,
-): PracticeCard[] => {
+): PracticeCard<T>[] => {
     const selectedEntities = Object.keys(data).sort(() => Math.random() - 0.5).slice(0, entitiesLimit);
-    const result: PracticeCard[] = [];
+    const result: PracticeCard<T>[] = [];
 
     selectedEntities.forEach(entity => {
         const translation = data[entity].translate;

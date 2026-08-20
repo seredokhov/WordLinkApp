@@ -1,7 +1,7 @@
-import { Word } from './word';
+import { BaseWord, Word } from './word';
 
-export type PracticeCard = {
-    entity: Word;
+export type PracticeCard<T extends BaseWord = Word> = {
+    entity: T;
     suggestions: string[];
     translation: string;
 };

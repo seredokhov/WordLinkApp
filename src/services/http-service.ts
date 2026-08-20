@@ -29,6 +29,10 @@ class HttpService {
     patch<T = unknown>(url: string, body: unknown, token: string | null = null): Promise<AxiosResponse<T>> {
         return axios.patch<T>(url, body, setAuthToken(token));
     }
+
+    put<T = unknown>(url: string, body: unknown, token: string | null = null): Promise<AxiosResponse<T>> {
+        return axios.put<T>(url, body, setAuthToken(token));
+    }
 }
 
 export default new HttpService();

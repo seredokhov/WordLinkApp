@@ -1,6 +1,12 @@
 import { AxiosResponse } from 'axios';
 import HttpService from './http-service';
-import { DictionaryWordsResponse, PublicDictionary, RemoteDictionary } from '../types';
+import {
+    DictionaryProgressResponse,
+    DictionaryWordsResponse,
+    PublicDictionary,
+    RemoteDictionary,
+    SaveDictionaryProgressRequest
+} from '../types';
 
 class DictionaryService {
     getDictionaries(token: string): Promise<PublicDictionary[]> {
@@ -17,7 +23,19 @@ class DictionaryService {
                 }, {});
             });
     }
+
+    saveDictionaryProgress(
+        userId: string,
+        dictionaryId: string,
+        payload: SaveDictionaryProgressRequest,
+        token: string
+    ): Promise<DictionaryProgressResponse> {
+        return HttpService.put<DictionaryProgressResponse>(
+            `/users/${userId}/dictionaries/${dictionaryId}/progress`,
+            payload,
+            token
+        ).then((response: AxiosResponse<DictionaryProgressResponse>): DictionaryProgressResponse => response.data);
+    }
 }
 
 export default new DictionaryService();
-
