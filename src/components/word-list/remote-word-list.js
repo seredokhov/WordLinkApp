@@ -142,9 +142,10 @@ RemoteWordList.propTypes = {
 
 const styles = StyleSheet.create({
     wrap: {
+        flex: 1,
         width: '100%',
         backgroundColor: COLORS.white,
-    },
+    }
 });
 
 export default RemoteWordList;
