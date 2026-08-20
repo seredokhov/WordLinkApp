@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { COLORS, SIZES } from '../../constants/theme';
+import { View, StyleSheet } from 'react-native';
 import { useAppContext } from '../../store/context';
 import { AddWord, Filter, SetError } from '../../store/actions';
 import AsyncStorageService from '../../services/async-storage-service';
@@ -8,6 +7,7 @@ import WordService from '../../services/word-service';
 import WordModal from '../modal/word-modal';
 import Input from '../input';
 import { errorHandler } from '../../utils';
+import Title from '../title';
 
 const SearchContainer = () => {
     const [isWordModalOpen, setWordModalOpen] = useState(false);
@@ -57,9 +57,7 @@ const SearchContainer = () => {
 
     return (
         <View style={styles.wrap}>
-            <View style={styles.titleWrap}>
-                <Text style={styles.title}>WordLink</Text>
-            </View>
+            <Title title="WordLink" iconName="book" />
             <Input
                 value={wordName}
                 icon="search"
@@ -86,21 +84,6 @@ const styles = StyleSheet.create({
     wrap: {
         flex: 1,
         justifyContent: 'space-between'
-    },
-    title: {
-        color: COLORS.white,
-        fontSize: SIZES.h1,
-        fontWeight: 'bold',
-        fontStyle: 'italic',
-        textAlign: 'center',
-    },
-    titleWrap: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 20,
-        marginBottom: 10
     },
     button: {
         display: 'flex',

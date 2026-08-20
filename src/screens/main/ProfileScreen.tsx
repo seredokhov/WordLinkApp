@@ -8,7 +8,7 @@ import { useAppContext } from '../../store/context';
 import ConfirmModal from '../../components/modal/confirm-modal';
 import DatabaseContainer from '../../components/container/database-container';
 import Button from '../../components/button';
-import Title from '../../components/title';
+import TextTitle from '../../components/title/text-title';
 import { ProfileScreenProps } from '../../types';
 import { HeaderIconAction } from '../../components/header/actions';
 
@@ -62,7 +62,7 @@ const ProfileScreen = (props: ProfileScreenProps) => {
             </BorderedHeader>
             <Content>
                 <View style={styles.content}>
-                    <Title title="Profile" iconName="person-circle" />
+                    <TextTitle title="Profile" iconName="person-circle" />
                     <View style={styles.rowsBlock}>
                         <View style={styles.row}>
                             <Text style={styles.label}>Name:</Text>

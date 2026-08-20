@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { COLORS } from '../../constants/theme';
 import Button from '../button';
-import Title from '../title';
+import TextTitle from '../title/text-title';
 
 export type PracticeIntroStat = {
     label: string;
@@ -30,7 +30,7 @@ const PracticeIntro = (props: PracticeIntroProps) => {
 
     return (
         <View style={styles.wrap}>
-            <Title title="Practice" iconName="school" />
+            <TextTitle title="Practice" iconName="school" />
             <View style={styles.textBlock}>
                 <Text style={styles.description}>{description}</Text>
                 {stats.map((stat) => (
