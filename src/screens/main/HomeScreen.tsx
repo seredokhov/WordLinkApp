@@ -12,9 +12,9 @@ import { ACTIVE_DICTIONARY_TYPE } from '../../constants/dictionary';
 const HomeScreen = (props: HomeScreenProps) => {
     const { navigation } = props;
 
-    const navigateToDictionaries = () => {
-        navigation.navigate('Dictionaries');
-    }
+    const navigateToProfile = () => {
+        navigation.navigate('Profile');
+    };
 
     const { store: { selectedWord, activeDictionary } } = useAppContext();
     const isRemoteDictionary = activeDictionary.type === ACTIVE_DICTIONARY_TYPE.REMOTE;
@@ -25,7 +25,7 @@ const HomeScreen = (props: HomeScreenProps) => {
         : [{ height: selectedWord.word ? 185 : 110 }];
 
     const rightContent = (isRemoteDictionary || !selectedWord.word) && (
-        <HeaderIconAction icon="book" onPress={navigateToDictionaries} />
+        <HeaderIconAction icon="person-circle" onPress={navigateToProfile} />
     );
 
     return (

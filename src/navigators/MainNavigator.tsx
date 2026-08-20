@@ -1,7 +1,7 @@
 import React from 'react';
-import { createBottomTabNavigator, BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
+import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { COLORS } from '../constants/theme';
-import { HomeScreen, CardsScreen, ProfileScreen, PracticeScreen, DictionariesScreen } from '../screens';
+import { CardsScreen, DictionariesScreen, HomeScreen, PracticeScreen, ProfileScreen } from '../screens';
 import Tab from '../components/tab';
 import { MainTabParamList, MainTabScreenOptionsArgs } from '../types';
 
@@ -26,7 +26,7 @@ const screenOptions = (options: MainTabScreenOptionsArgs): BottomTabNavigationOp
         Dictionaries: 'Dictionaries',
     };
 
-    const baseOptions: BottomTabNavigationOptions = {
+    return {
         headerShown: false,
         tabBarActiveTintColor: COLORS.lightRed,
         tabBarInactiveTintColor: COLORS.darkGray,
@@ -51,15 +51,6 @@ const screenOptions = (options: MainTabScreenOptionsArgs): BottomTabNavigationOp
             );
         },
     };
-
-    if (route.name === 'Dictionaries') {
-        return {
-            ...baseOptions,
-            tabBarButton: () => null,
-        };
-    }
-
-    return baseOptions;
 };
 
 const MainNavigator = () => {
@@ -68,8 +59,8 @@ const MainNavigator = () => {
             <TabNavigator.Screen name="Home" component={HomeScreen} />
             <TabNavigator.Screen name="Cards" component={CardsScreen} />
             <TabNavigator.Screen name="Practice" component={PracticeScreen} />
-            <TabNavigator.Screen name="Profile" component={ProfileScreen} />
             <TabNavigator.Screen name="Dictionaries" component={DictionariesScreen} />
+            <TabNavigator.Screen name="Profile" component={ProfileScreen} />
         </TabNavigator.Navigator>
     );
 };
