@@ -152,7 +152,7 @@ const DictionariesScreen = (props: DictionariesScreenProps) => {
         <View style={styles.page}>
             <BorderedHeader
                 leftContent={<HeaderIconAction icon="arrow-back-outline" onPress={goHome} />}
-                rightContent={<HeaderIconAction icon="person-circle" onPress={navigateToProfile} bordered />}
+                rightContent={<HeaderIconAction icon="person-circle" onPress={navigateToProfile} />}
             >
                 <Text style={styles.title}>Dictionaries</Text>
             </BorderedHeader>

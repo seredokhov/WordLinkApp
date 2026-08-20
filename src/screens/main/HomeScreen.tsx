@@ -25,11 +25,7 @@ const HomeScreen = (props: HomeScreenProps) => {
         : [{ height: selectedWord.word ? 185 : 110 }];
 
     const rightContent = (isRemoteDictionary || !selectedWord.word) && (
-        <HeaderIconAction
-            icon="book"
-            onPress={navigateToDictionaries}
-            bordered
-        />
+        <HeaderIconAction icon="book" onPress={navigateToDictionaries} />
     );
 
     return (

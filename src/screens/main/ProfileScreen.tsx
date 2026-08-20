@@ -56,7 +56,7 @@ const ProfileScreen = (props: ProfileScreenProps) => {
         <View style={styles.page}>
             <BorderedHeader
                 leftContent={<HeaderIconAction icon="arrow-back-outline" onPress={back} />}
-                rightContent={<HeaderIconAction icon="log-out-outline" onPress={openConformModal} bordered />}
+                rightContent={<HeaderIconAction icon="log-out-outline" onPress={openConformModal} />}
             >
                 <Text style={styles.title}>Profile</Text>
             </BorderedHeader>

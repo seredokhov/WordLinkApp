@@ -79,7 +79,7 @@ const CardsScreen = (props: CardScreenProps) => {
         <View style={styles.page}>
             <BorderedHeader
                 leftContent={<HeaderIconAction icon="arrow-back-outline" onPress={back} />}
-                rightContent={<HeaderIconAction icon="person-circle" onPress={navigateToProfile} bordered />}
+                rightContent={<HeaderIconAction icon="person-circle" onPress={navigateToProfile} />}
             >
                 <Text style={styles.title}>Cards</Text>
             </BorderedHeader>
