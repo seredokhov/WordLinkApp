@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useMemo, useReducer } from 'react';
 import { COLORS } from './src/constants/theme';
 import { ContextApp } from './src/store/context';
 import { StatusBar } from 'react-native';
@@ -21,8 +21,10 @@ const App = () => {
         });
     }, []);
 
+    const contextValue = useMemo(() => ({ store, dispatch }), [store]);
+
     return (
-        <ContextApp.Provider value={{store, dispatch}}>
+        <ContextApp.Provider value={contextValue}>
             <StatusBar backgroundColor={COLORS.lightRed} />
             <AppNavigator />
             <AlertModal />

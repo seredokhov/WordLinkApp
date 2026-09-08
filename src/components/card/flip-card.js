@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { memo, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import CardFlip from 'react-native-card-flip';
@@ -17,14 +17,14 @@ const FlipCard = props => {
 
     const cardRed = useRef(null);
 
-    const listen = () => {
+    const listen = useCallback(() => {
         VoiceService.play(word);
-        cardRed.current.tip();
-    };
+        cardRed.current && cardRed.current.tip();
+    }, [word]);
 
-    const flipCard = () => {
-        cardRed.current.flip();
-    };
+    const flipCard = useCallback(() => {
+        cardRed.current && cardRed.current.flip();
+    }, []);
 
     return (
         <CardFlip
@@ -67,7 +67,7 @@ const FlipCard = props => {
                 />
             </Card>
         </CardFlip>
-    )
+    );
 };
 
 FlipCard.propTypes = {
@@ -107,4 +107,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default FlipCard;
+export default memo(FlipCard);

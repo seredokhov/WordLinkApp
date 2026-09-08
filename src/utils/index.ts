@@ -7,11 +7,12 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native';
 const noop = () => {};
 
 const randomize = <T>(array: T[]): T[] => {
-    for (let i = array.length - 1; i > 0; i--) {
+    const result = [...array];
+    for (let i = result.length - 1; i > 0; i--) {
         const randomIndex = Math.floor(Math.random() * (i + 1));
-        [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
+        [result[i], result[randomIndex]] = [result[randomIndex], result[i]];
     }
-    return array;
+    return result;
 };
 
 const getRandomTranslations = (

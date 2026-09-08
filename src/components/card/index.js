@@ -1,27 +1,28 @@
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { COLORS } from '../../constants/theme';
+import { noop } from '../../utils';
 
 const Card = props => {
     const {
         title,
-        backgroundColor,
-        textColor,
+        backgroundColor = COLORS.lightRed,
+        textColor = COLORS.white,
         children,
-        onPress,
+        onPress = noop,
         contentStyle
-    } = { ...defaultProps, ...props };
+    } = props;
 
-    const cardStyles = [
-        styles.card,
-        { backgroundColor },
-        contentStyle
-    ];
+    const cardStyles = useMemo(
+        () => [styles.card, { backgroundColor }, contentStyle],
+        [backgroundColor, contentStyle]
+    );
 
-    const textStyles = [
-        { color: textColor }
-    ];
+    const textStyles = useMemo(
+        () => [styles.label, { color: textColor }],
+        [textColor]
+    );
 
     return (
         <TouchableOpacity
@@ -29,20 +30,14 @@ const Card = props => {
             style={cardStyles}
             onPress={onPress}
         >
-            <Text style={[styles.label, textStyles]}>{title}</Text>
+            <Text style={textStyles}>{title}</Text>
             {
                 children && (
                     <View>{children}</View>
                 )
             }
         </TouchableOpacity>
-    )
-};
-
-const defaultProps = {
-    backgroundColor: COLORS.lightRed,
-    textColor: COLORS.white,
-    onPress: () => null,
+    );
 };
 
 Card.propTypes = {
@@ -73,4 +68,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Card;
+export default memo(Card);

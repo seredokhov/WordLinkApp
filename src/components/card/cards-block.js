@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, Text } from 'react-native';
 import Swiper from 'react-native-deck-swiper'
@@ -10,8 +10,8 @@ const CardsBlock = props => {
     const {
         cardsData,
         onRefresh,
-        dictionaryTitle
-    } = { ...defaultProps, ...props };
+        dictionaryTitle = ''
+    } = props;
 
     const [noMore, setNoMore] = useState(cardsData.length === 0);
 
@@ -21,26 +21,26 @@ const CardsBlock = props => {
         }
     }, [cardsData]);
 
-
-    const renderCards = card => {
-        return (
+    const renderCards = useCallback(
+        card => (
             <FlipCard
                 {...card}
                 dictionaryTitle={dictionaryTitle}
             />
-        );
-    };
+        ),
+        [dictionaryTitle]
+    );
 
-    const swipeAll = () => {
+    const swipeAll = useCallback(() => {
         setNoMore(true);
-    };
+    }, []);
 
-    const refresh = () => {
+    const refresh = useCallback(() => {
         setNoMore(false);
         onRefresh();
-    };
+    }, [onRefresh]);
 
-    return(
+    return (
         <View style={styles.container}>
             {
                 !noMore && cardsData.length > 0 && (
@@ -75,10 +75,6 @@ const CardsBlock = props => {
     );
 };
 
-const defaultProps = {
-    dictionaryTitle: ''
-};
-
 CardsBlock.propTypes = {
     cardsData: PropTypes.array.isRequired,
     onRefresh: PropTypes.func.isRequired,
@@ -108,4 +104,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default CardsBlock;
+export default memo(CardsBlock);

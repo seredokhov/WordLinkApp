@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { COLORS } from '../../constants/theme';
 import { useAppContext } from '../../store/context';
@@ -10,7 +10,6 @@ import { HeaderIconAction } from '../../components/header/actions';
 import { useIsFocused } from '@react-navigation/native';
 import Button from '../../components/button';
 import Loader from '../../components/loader';
-import ActiveDictionaryBadge from '../../components/active-dictionary-badge';
 import { CardScreenProps } from '../../types';
 import { ACTIVE_DICTIONARY_TYPE } from '../../constants/dictionary';
 
@@ -18,7 +17,10 @@ const CardsScreen = (props: CardScreenProps) => {
     const { navigation } = props;
     const { store: { activeDictionary } } = useAppContext();
     const isRemoteDictionary = activeDictionary.type === ACTIVE_DICTIONARY_TYPE.REMOTE;
-    const cardsData = Object.values(activeDictionary.dictionary);
+    const cardsData = useMemo(
+        () => Object.values(activeDictionary.dictionary),
+        [activeDictionary.dictionary]
+    );
     const [cards, setCards] = useState(cardsData);
     const [isLoadedData, setLoadedData] = useState(false);
     const isFocused = useIsFocused();
@@ -27,7 +29,7 @@ const CardsScreen = (props: CardScreenProps) => {
         navigation.navigate('Profile');
     };
 
-    const shuffleCards = () => {
+    const shuffleCards = useCallback(() => {
         if (cardsData.length === 0) {
             setLoadedData(true);
             return;
@@ -35,7 +37,7 @@ const CardsScreen = (props: CardScreenProps) => {
 
         setCards(randomize(cardsData));
         setLoadedData(true);
-    };
+    }, [cardsData]);
 
     const back = () => {
         navigation.navigate('Home');
@@ -48,17 +50,22 @@ const CardsScreen = (props: CardScreenProps) => {
         }
 
         shuffleCards();
-    }, [isFocused, activeDictionary]);
+    }, [isFocused, activeDictionary.id, activeDictionary.dictionary, shuffleCards]);
+
+    const cardsBlock = useMemo(
+        () => (
+            <CardsBlock
+                cardsData={cards}
+                onRefresh={shuffleCards}
+                dictionaryTitle={isRemoteDictionary ? activeDictionary.title : undefined}
+            />
+        ),
+        [cards, shuffleCards, isRemoteDictionary, activeDictionary.title]
+    );
 
     const renderContent = () => {
         if (cardsData.length > 0) {
-            return (
-                <CardsBlock
-                    cardsData={cards}
-                    onRefresh={shuffleCards}
-                    dictionaryTitle={isRemoteDictionary ? activeDictionary.title : undefined}
-                />
-            );
+            return cardsBlock;
         }
 
         return (
